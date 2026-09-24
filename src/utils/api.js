@@ -1,26 +1,42 @@
-const NHL_BASE_URL = "/nhl-api"
+import { getToday } from "./helpers"
 
-function getToday(){
-  const date = new Date()
-  return date.toISOString().split("T")[0]
-}
+const NHL_BASE_URL = "/nhl-api"
 
 async function fetchJson(url){
   const response = await fetch(url)
+  const text = await response.text()
 
   if(!response.ok){
-    throw new Error(`Request failed: ${response.status}`)
+    throw new Error(`${url} failed with status ${response.status}`)
   }
 
-  return response.json()
+  try{
+    return JSON.parse(text)
+  }catch(error){
+    throw new Error(`${url} returned non-JSON: ${text.slice(0, 80)}`)
+  }
 }
 
-export async function getNhlSchedule(){
-  const today = getToday()
-  return fetchJson(`${NHL_BASE_URL}/v1/schedule/${today}`)
+export async function getNhlSchedule(dateValue){
+  let selectedDate = dateValue
+
+  if(!selectedDate){
+    selectedDate = getToday()
+  }
+
+  return fetchJson(`${NHL_BASE_URL}/v1/schedule/${selectedDate}`)
 }
 
-export async function getNhlScores(){
-  const today = getToday()
-  return fetchJson(`${NHL_BASE_URL}/v1/score/${today}`)
+export async function getNhlScores(dateValue){
+  let selectedDate = dateValue
+
+  if(!selectedDate){
+    selectedDate = getToday()
+  }
+
+  return fetchJson(`${NHL_BASE_URL}/v1/score/${selectedDate}`)
+}
+
+export async function getNhlStandings(){
+  return fetchJson(`${NHL_BASE_URL}/v1/standings/now`)
 }
