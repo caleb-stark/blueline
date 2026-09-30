@@ -1,4 +1,4 @@
-import { formatGameTime, getGameStatusLabel, getScore, getTeamAbbrev, getTeamName } from "../../utils/helpers"
+import { formatGameTime, getGameStatusLabel, getScore, getTeamAbbrev, getTeamName } from "../../../utils/helpers"
 
 function GameCard({ game }){
   const awayScore = getScore(game.awayTeam)

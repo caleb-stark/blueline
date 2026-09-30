@@ -1,4 +1,4 @@
-import { getGameStatusLabel, getScore, getTeamAbbrev } from "../../utils/helpers"
+import { getGameStatusLabel, getScore, getTeamAbbrev } from "../../../utils/helpers"
 
 function ScoreTicker({ games }){
   if(!games.length){
