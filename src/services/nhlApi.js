@@ -1,7 +1,5 @@
-const NHL_BASE_URL = "/nhl-api/v1"
-
 export async function nhlFetch(path){
-  const response = await fetch(`${NHL_BASE_URL}${path}`)
+  const response = await fetch(`/nhl-api/v1${path}`)
   const text = await response.text()
 
   if(!response.ok){
