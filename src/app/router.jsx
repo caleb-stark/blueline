@@ -9,7 +9,7 @@ import TeamsPage from "../pages/TeamsPage"
 import TeamDetailsPage from "../pages/TeamDetailsPage"
 import PlayerDetailsPage from "../pages/PlayerDetailsPage"
 
-const router = createBrowserRouter([
+export const routes = [
   {
     path:"/",
     element:<AppLayout />,
@@ -48,6 +48,8 @@ const router = createBrowserRouter([
       }
     ]
   }
-])
+]
+
+const router = createBrowserRouter(routes)
 
 export default router
