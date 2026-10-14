@@ -1,5 +1,15 @@
 function StandingsPreview({ standings }){
-  const topTeams = standings.slice(0, 8)
+  let rows = []
+
+  if(Array.isArray(standings?.standings)){
+    rows = standings.standings
+  }
+
+  if(Array.isArray(standings)){
+    rows = standings
+  }
+
+  const topTeams = rows.slice(0, 8)
 
   if(!topTeams.length){
     return null
