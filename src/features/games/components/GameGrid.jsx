@@ -1,7 +1,10 @@
-import React from "react";
-import GameCard from "./GameCard";
+import GameCard from "./GameCard"
 
 function GameGrid({ games }){
+  if(!Array.isArray(games)){
+    return null
+  }
+
   return(
     <div className="game-grid">
       {games.map(game => (

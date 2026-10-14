@@ -1,11 +1,11 @@
 import { nhlFetch } from "../../../services/nhlApi"
 
-export function getSchedule(date){
-  return nhlFetch(`/schedule/${date}`)
+export function getSchedule(date, options){
+  return nhlFetch(`/schedule/${date}`, options)
 }
 
-export function getScores(date){
-  return nhlFetch(`/score/${date}`)
+export function getScores(date, options){
+  return nhlFetch(`/score/${date}`, options)
 }
 
 export function getGameLanding(gameId){

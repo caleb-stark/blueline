@@ -1,0 +1,22 @@
+{
+  "captureDate": "2026-10-14",
+  "currentDate": "2026-10-12",
+  "games": [
+    {
+      "id": 2026020087,
+      "gameDate": "2026-10-12",
+      "gameState": "OFF",
+      "gameScheduleState": "OK",
+      "awayTeam": {"id": 13, "name": {"default": "Panthers"}, "abbrev": "FLA", "score": 3},
+      "homeTeam": {"id": 7, "name": {"default": "Sabres"}, "abbrev": "BUF", "score": 5}
+    },
+    {
+      "id": 2026020088,
+      "gameDate": "2026-10-12",
+      "gameState": "OFF",
+      "gameScheduleState": "OK",
+      "awayTeam": {"id": 9, "name": {"default": "Senators"}, "abbrev": "OTT", "score": 4},
+      "homeTeam": {"id": 1, "name": {"default": "Devils"}, "abbrev": "NJD", "score": 1}
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import React from "react"
+import { getGameStatusLabel, getScore, getTeamAbbrev } from "../../../utils/games"
 
 function ScoreTicker({ games }){
   if(!games.length){

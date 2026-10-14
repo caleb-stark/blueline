@@ -1,0 +1,39 @@
+{
+  "captureDate": "2026-10-14",
+  "gameWeek": [
+    {
+      "date": "2026-10-14",
+      "numberOfGames": 2,
+      "games": [
+        {
+          "id": 2026020106,
+          "gameState": "FUT",
+          "gameScheduleState": "OK",
+          "startTimeUTC": "2026-10-14T23:30:00Z",
+          "awayTeam": {"id": 8, "abbrev": "MTL"},
+          "homeTeam": {"id": 15, "abbrev": "WSH"}
+        },
+        {
+          "id": 2026020107,
+          "gameState": "FUT",
+          "gameScheduleState": "OK",
+          "startTimeUTC": "2026-10-15T00:30:00Z",
+          "awayTeam": {"id": 25, "abbrev": "DAL"},
+          "homeTeam": {"id": 21, "abbrev": "COL"}
+        }
+      ]
+    },
+    {
+      "date": "2026-10-15",
+      "numberOfGames": 11,
+      "games": [
+        {
+          "id": 2026020108,
+          "gameState": "FUT",
+          "awayTeam": {"id": 7, "abbrev": "BUF"},
+          "homeTeam": {"id": 10, "abbrev": "TOR"}
+        }
+      ]
+    }
+  ]
+}
