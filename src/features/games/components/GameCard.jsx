@@ -1,29 +1,17 @@
 import { Link } from "react-router-dom"
-import { gameHasStarted, getGameStatusLabel, getScore, getTeamAbbrev, getTeamName } from "../../../utils/games"
+import { gameHasStarted, getGameStatusLabel, getScore, getTeamAbbrev } from "../../../utils/games"
 
 function GameCard({ game }){
   const awayTeam = game?.awayTeam
   const homeTeam = game?.homeTeam
   const awayScore = getScore(awayTeam)
   const homeScore = getScore(homeTeam)
-  const awayName = getTeamName(awayTeam)
-  const homeName = getTeamName(homeTeam)
   const awayAbbrev = getTeamAbbrev(awayTeam)
   const homeAbbrev = getTeamAbbrev(homeTeam)
-  const showScores = gameHasStarted(game)
-  let awayTeamName = "Unknown team"
-  let homeTeamName = "Unknown team"
   let awayTeamAbbrev = "—"
   let homeTeamAbbrev = "—"
-  let scoreContent = null
-
-  if(awayName){
-    awayTeamName = awayName
-  }
-
-  if(homeName){
-    homeTeamName = homeName
-  }
+  let awayScoreLabel = "—"
+  let homeScoreLabel = "—"
 
   if(awayAbbrev){
     awayTeamAbbrev = awayAbbrev
@@ -33,13 +21,12 @@ function GameCard({ game }){
     homeTeamAbbrev = homeAbbrev
   }
 
-  if(showScores){
-    scoreContent = (
-      <div className="game-card-score">
-        <span>{awayScore === null ? "—" : awayScore}</span>
-        <span>{homeScore === null ? "—" : homeScore}</span>
-      </div>
-    )
+  if(gameHasStarted(game) && awayScore !== null){
+    awayScoreLabel = awayScore
+  }
+
+  if(gameHasStarted(game) && homeScore !== null){
+    homeScoreLabel = homeScore
   }
 
   return(
@@ -49,19 +36,19 @@ function GameCard({ game }){
       </div>
 
       <Link to={`/games/${game?.id}`} className="game-card-link">
-        <div className="game-card-teams">
-          <div>
-            <span>{awayTeamName}</span>
+        <div className="game-card-matchup">
+          <div className="game-card-team game-card-away">
             <strong>{awayTeamAbbrev}</strong>
+            <span>{awayScoreLabel}</span>
           </div>
 
-          <div>
-            <span>{homeTeamName}</span>
+          <span className="game-card-at">at</span>
+
+          <div className="game-card-team game-card-home">
             <strong>{homeTeamAbbrev}</strong>
+            <span>{homeScoreLabel}</span>
           </div>
         </div>
-
-        {scoreContent}
       </Link>
     </article>
   )

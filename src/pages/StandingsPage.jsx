@@ -3,9 +3,10 @@ import StandingsTable from "../features/standings/components/StandingsTable"
 import Loading from "../components/ui/Loading"
 import ErrorMessage from "../components/ui/ErrorMessage"
 import EmptyState from "../components/ui/EmptyState"
+import { formatDate } from "../utils/dates"
 
 function StandingsPage(){
-  const { standings, loading, error } = useStandings("now")
+  const { standings, loading, error } = useStandings(formatDate())
   let content = <StandingsTable standings={standings} />
 
   if(loading){

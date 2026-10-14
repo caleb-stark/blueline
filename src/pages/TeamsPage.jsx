@@ -4,9 +4,10 @@ import TeamGrid from "../features/teams/components/TeamGrid"
 import Loading from "../components/ui/Loading"
 import ErrorMessage from "../components/ui/ErrorMessage"
 import EmptyState from "../components/ui/EmptyState"
+import { formatDate } from "../utils/dates"
 
 function TeamsPage(){
-  const { standings, loading, error } = useStandings("now")
+  const { standings, loading, error } = useStandings(formatDate())
   const teams = getTeamsFromStandings(standings)
   let content = <TeamGrid teams={teams} />
 
