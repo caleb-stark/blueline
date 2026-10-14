@@ -40,6 +40,20 @@ body{
     linear-gradient(180deg, #0f0a1f 0%, #140d26 52%, #0b0715 100%);
 }
 
+.page-container{
+  width:min(1180px, calc(100% - 2rem));
+  margin:0 auto;
+  padding:2.5rem 0 4rem;
+}
+
+.page-container > h1{
+  color:var(--text);
+  font-size:clamp(2rem, 5vw, 3.4rem);
+  line-height:1;
+  letter-spacing:-0.06em;
+  margin:0 0 1.25rem;
+}
+
 button,
 input{
   font:inherit;
@@ -51,6 +65,73 @@ button{
 
 a{
   color:inherit;
+}
+
+.navbar{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:1.5rem;
+  width:min(1180px, calc(100% - 2rem));
+  margin:0 auto;
+  padding:1rem 0;
+  border-bottom:1px solid var(--border);
+}
+
+.navbar-brand{
+  display:flex;
+  align-items:center;
+  gap:0.65rem;
+  color:var(--text);
+  font-size:1.1rem;
+  font-weight:900;
+  letter-spacing:-0.03em;
+  text-decoration:none;
+}
+
+.navbar-mark{
+  display:grid;
+  width:2.25rem;
+  height:2.25rem;
+  place-items:center;
+  color:#ffffff;
+  border-radius:0.75rem;
+  background:linear-gradient(135deg, var(--purple-dark), var(--purple-bright));
+  box-shadow:0 10px 24px rgba(124, 58, 237, 0.35);
+  font-size:0.8rem;
+  letter-spacing:0.04em;
+}
+
+.navbar-links{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.25rem;
+}
+
+.navbar-links a{
+  color:var(--muted);
+  border-radius:0.7rem;
+  padding:0.55rem 0.7rem;
+  font-size:0.9rem;
+  font-weight:750;
+  text-decoration:none;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active{
+  color:var(--text);
+  background:rgba(196, 181, 253, 0.12);
+}
+
+.navbar-pill{
+  color:var(--purple-bright);
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:0.5rem 0.75rem;
+  font-size:0.78rem;
+  font-weight:800;
+  white-space:nowrap;
 }
 
 h1,
@@ -262,6 +343,64 @@ p{
   padding:1rem;
 }
 
+.game-card-link{
+  display:block;
+  color:inherit;
+  text-decoration:none;
+}
+
+.game-card-top span{
+  color:var(--muted-strong);
+  font-size:0.8rem;
+  font-weight:800;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.game-card-matchup{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:0.75rem;
+  padding:1.4rem 0 0.6rem;
+}
+
+.game-card-team{
+  display:grid;
+  gap:0.35rem;
+}
+
+.game-card-team strong{
+  color:var(--text);
+  font-size:clamp(1.8rem, 5vw, 2.6rem);
+  letter-spacing:-0.06em;
+  line-height:1;
+}
+
+.game-card-team span{
+  color:var(--purple-bright);
+  font-size:1.3rem;
+  font-weight:900;
+  line-height:1;
+}
+
+.game-card-away{
+  justify-items:start;
+  text-align:left;
+}
+
+.game-card-home{
+  justify-items:end;
+  text-align:right;
+}
+
+.game-card-at{
+  color:var(--muted);
+  font-size:0.85rem;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
 .game-card-top,
 .game-card-footer{
   display:flex;
@@ -319,7 +458,7 @@ p{
 
 .standings-row{
   display:grid;
-  grid-template-columns:1fr repeat(4, 64px);
+  grid-template-columns:1fr repeat(5, 64px);
   align-items:center;
   gap:0.75rem;
   color:var(--muted-strong);
@@ -352,7 +491,7 @@ p{
 }
 
 .error-card strong,
-.empty-card h3{
+.empty-card strong{
   display:block;
   color:#ffffff;
   margin-bottom:0.3rem;
@@ -371,6 +510,36 @@ p{
   background:var(--purple-bright);
   box-shadow:0 0 0 0 rgba(192, 132, 252, 0.65);
   animation:pulse 1.2s infinite;
+}
+
+.team-card{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  gap:0.35rem 0.75rem;
+  min-height:7rem;
+  margin-bottom:0;
+}
+
+.team-card img{
+  grid-row:span 2;
+  width:3rem;
+  height:3rem;
+  object-fit:contain;
+}
+
+.team-card > span{
+  color:var(--purple-bright);
+  font-size:0.82rem;
+  font-weight:900;
+  letter-spacing:0.1em;
+}
+
+.team-card a,
+.team-card strong{
+  color:var(--text);
+  font-size:1rem;
+  text-decoration:none;
 }
 
 @keyframes pulse{
@@ -400,6 +569,24 @@ p{
     padding-top:1rem;
   }
 
+  .page-container{
+    width:min(100% - 1rem, 1180px);
+    padding-top:1.25rem;
+  }
+
+  .navbar{
+    grid-template-columns:1fr auto;
+    width:min(100% - 1rem, 1180px);
+    gap:0.75rem;
+  }
+
+  .navbar-links{
+    grid-column:1 / -1;
+    justify-content:flex-start;
+    overflow-x:auto;
+    padding-bottom:0.15rem;
+  }
+
   .schedule-controls,
   .section-heading,
   .error-card{
@@ -413,7 +600,7 @@ p{
   }
 
   .standings-row{
-    grid-template-columns:1fr repeat(4, 42px);
+    grid-template-columns:1fr repeat(5, 38px);
     gap:0.35rem;
     font-size:0.9rem;
   }

@@ -22,6 +22,6 @@ describe("ScoresPage", () => {
     )
 
     expect(screen.getAllByText("Final")).toHaveLength(2)
-    expect(screen.getByRole("link", { name:/PanthersFLA SabresBUF/ })).toHaveAttribute("href", "/games/2026020087")
+    expect(screen.getByRole("link", { name:/FLA.*at.*BUF/ })).toHaveAttribute("href", "/games/2026020087")
   })
 })

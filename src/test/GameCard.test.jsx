@@ -13,6 +13,7 @@ describe("GameCard", () => {
     )
 
     expect(screen.getByText("Final")).toBeInTheDocument()
+    expect(screen.getByText("BUF")).toBeInTheDocument()
     expect(screen.getByText("5")).toBeInTheDocument()
     expect(screen.getByRole("link")).toHaveAttribute("href", "/games/2026020087")
   })
@@ -25,6 +26,6 @@ describe("GameCard", () => {
     )
 
     expect(screen.getByText("Scheduled")).toBeInTheDocument()
-    expect(screen.queryByText("0")).not.toBeInTheDocument()
+    expect(screen.getAllByText("—")).toHaveLength(2)
   })
 })
