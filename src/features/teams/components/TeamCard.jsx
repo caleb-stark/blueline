@@ -10,7 +10,7 @@ function TeamCard({ team }){
   }
 
   if(team.logo){
-    logoContent = <img src={team.logo} alt="" />
+    logoContent = <img src={team.logo} alt="" width="48" height="48" loading="lazy" decoding="async" />
   }
 
   if(team.abbrev){

@@ -25,7 +25,7 @@ function TeamsPage(){
 
   return (
     <div>
-      <h1>Teams</h1>
+      <h1 className="page-title">Teams</h1>
       {content}
     </div>
   )
