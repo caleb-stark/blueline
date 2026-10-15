@@ -26,7 +26,7 @@ function ScoresPage(){
 
   return (
     <div>
-      <h1>Scores</h1>
+      <h1 className="page-title">Scores</h1>
       <ScheduleControls
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}

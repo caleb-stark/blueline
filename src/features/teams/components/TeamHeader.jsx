@@ -14,7 +14,7 @@ function TeamHeader({ team }){
       {logo && <img src={logo} alt="" width="96" height="96" decoding="async" />}
       <div>
         <p className="eyebrow">Team details</p>
-        <h1>{name}</h1>
+        <h1 className="page-title">{name}</h1>
         {abbrev ? <Link to={`/teams/${abbrev}`} className="team-detail-abbrev">{abbrev}</Link> : <span className="team-detail-abbrev">—</span>}
       </div>
     </header>

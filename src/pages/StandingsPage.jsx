@@ -23,7 +23,7 @@ function StandingsPage(){
 
   return (
     <div>
-      <h1>Standings</h1>
+      <h1 className="page-title">Standings</h1>
       {content}
     </div>
   )
