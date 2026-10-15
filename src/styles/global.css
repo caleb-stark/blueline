@@ -52,7 +52,7 @@ body{
   font-size:clamp(2rem, 5vw, 3.4rem);
   line-height:1;
   letter-spacing:-0.06em;
-  margin:0 0 1.75rem;
+  margin:0 0 2rem;
 }
 
 button,
@@ -226,7 +226,7 @@ p{
   border:1px solid var(--border);
   border-radius:1.5rem;
   background:var(--surface);
-  margin-bottom:1.25rem;
+  margin-bottom:1rem;
 }
 
 .schedule-controls label{
