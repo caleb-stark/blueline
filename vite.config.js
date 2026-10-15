@@ -6,6 +6,7 @@ const nhlApiProxy = {
     target:"https://api-web.nhle.com",
     changeOrigin:true,
     secure:false,
+    followRedirects:true,
     rewrite:path => path.replace(/^\/nhl-api/, "")
   }
 }

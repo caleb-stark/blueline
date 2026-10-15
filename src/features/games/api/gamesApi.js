@@ -8,14 +8,14 @@ export function getScores(date, options){
   return nhlFetch(`/score/${date}`, options)
 }
 
-export function getGameLanding(gameId){
-  return nhlFetch(`/gamecenter/${gameId}/landing`)
+export function getGameLanding(gameId, options){
+  return nhlFetch(`/gamecenter/${gameId}/landing`, options)
 }
 
-export function getGameBoxScore(gameId){
-  return nhlFetch(`/gamecenter/${gameId}/boxscore`)
+export function getGameBoxScore(gameId, options){
+  return nhlFetch(`/gamecenter/${gameId}/boxscore`, options)
 }
 
-export function getGamePlayByPlay(gameId){
-  return nhlFetch(`/gamecenter/${gameId}/play-by-play`)
+export function getGamePlayByPlay(gameId, options){
+  return nhlFetch(`/gamecenter/${gameId}/play-by-play`, options)
 }
