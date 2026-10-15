@@ -608,6 +608,104 @@ a{
   margin-bottom:0;
 }
 
+.game-detail-header{
+  margin-bottom:var(--title-gap);
+}
+
+.game-detail-header .page-title{
+  margin-bottom:var(--space-2);
+}
+
+.game-detail-back{
+  display:inline-block;
+  color:var(--purple-bright);
+  font-weight:800;
+  margin-top:var(--space-4);
+  text-decoration:none;
+}
+
+.game-scoreboard,
+.game-details-page > .panel-card,
+.game-details-page > .error-card,
+.game-details-page > .empty-card{
+  margin-bottom:var(--space-5);
+}
+
+.game-detail-score{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:var(--space-6);
+  text-align:center;
+}
+
+.game-detail-score div{
+  display:grid;
+  gap:var(--space-2);
+}
+
+.game-detail-score span{
+  color:var(--purple-bright);
+  font-size:1.35rem;
+  font-weight:900;
+}
+
+.game-detail-score strong{
+  color:var(--text-strong);
+  font-size:clamp(2.5rem, 8vw, 4.5rem);
+  line-height:1;
+}
+
+.game-detail-score b{
+  color:var(--muted);
+}
+
+.box-score-team + .box-score-team{
+  margin-top:var(--space-5);
+}
+
+.box-score-team h3{
+  color:var(--purple-bright);
+  margin-bottom:var(--space-2);
+}
+
+.box-score-list,
+.event-list{
+  display:grid;
+  gap:var(--space-2);
+  padding:0;
+  margin:0;
+  list-style:none;
+}
+
+.box-score-row,
+.event-list li{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto;
+  gap:var(--space-4);
+  color:var(--muted-strong);
+  border-bottom:1px solid var(--border-soft);
+  padding:var(--space-2) 0;
+}
+
+.box-score-row a,
+.event-list a{
+  color:var(--text);
+  text-decoration:none;
+}
+
+.event-list li{
+  grid-template-columns:5rem minmax(5rem, auto) 1fr;
+}
+
+.event-list li > span:first-child{
+  color:var(--muted);
+}
+
+.muted-text{
+  color:var(--muted);
+}
+
 .team-detail-abbrev{
   display:inline-block;
   color:var(--purple-bright);
@@ -720,6 +818,19 @@ a{
   .team-detail-header img{
     width:4rem;
     height:4rem;
+  }
+
+  .game-detail-score{
+    gap:var(--space-3);
+  }
+
+  .event-list li{
+    grid-template-columns:4rem 1fr;
+  }
+
+  .event-list li > span:last-child,
+  .event-list li > a:last-child{
+    grid-column:2;
   }
 
   .team-stat-grid,
