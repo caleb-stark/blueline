@@ -1,45 +1,73 @@
-import { getGameLanding, getGameBoxScore, getGamePlayByPlay } from "../api/gamesApi";
+import { useEffect, useState } from "react"
+import { getGameLanding, getGameBoxScore, getGamePlayByPlay } from "../api/gamesApi"
 
-function useGameDetails(gameId) {
-  const [landing, setLanding] = useState(null);
-  const [boxScore, setBoxScore] = useState(null);
-  const [playByPlay, setPlayByPlay] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+function message(error){
+  return error?.message || "Unable to load game data"
+}
 
-  const loadGame = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const [landingData, boxScoreData, playByPlayData] = await Promise.all([
-        getGameLanding(gameId),
-        getGameBoxScore(gameId),
-        getGamePlayByPlay(gameId),
-      ]);
-
-      setLanding(landingData);
-      setBoxScore(boxScoreData);
-      setPlayByPlay(playByPlayData);
-    } catch (error) {
-      setError(error.message);
-      setLanding(null);
-      setBoxScore(null);
-      setPlayByPlay(null);
-    } finally {
-      setLoading(false);
-    }
-  }, [gameId]);
+function useGameDetails(gameId){
+  const [state, setState] = useState({
+    landing:null,
+    boxScore:null,
+    playByPlay:null,
+    loading:true,
+    error:null,
+    errors:{ landing:null, boxScore:null, playByPlay:null }
+  })
 
   useEffect(() => {
-    loadGame();
-  }, [loadGame]);
+    const controller = new AbortController()
+    let active = true
 
-  return {
-    landing,
-    boxScore,
-    playByPlay,
-    loading,
-    error,
-  };
+    async function loadGame(){
+      setState(current => ({ ...current, loading:true, error:null }))
+
+      try{
+        const results = await Promise.allSettled([
+          getGameLanding(gameId, { signal:controller.signal }),
+          getGameBoxScore(gameId, { signal:controller.signal }),
+          getGamePlayByPlay(gameId, { signal:controller.signal })
+        ])
+
+        if(!active){
+          return
+        }
+
+        const landingResult = results[0]
+        const boxScoreResult = results[1]
+        const playByPlayResult = results[2]
+        const errors = {
+          landing:landingResult.status === "rejected" ? message(landingResult.reason) : null,
+          boxScore:boxScoreResult.status === "rejected" ? message(boxScoreResult.reason) : null,
+          playByPlay:playByPlayResult.status === "rejected" ? message(playByPlayResult.reason) : null
+        }
+
+        setState({
+          landing:landingResult.status === "fulfilled" ? landingResult.value : null,
+          boxScore:boxScoreResult.status === "fulfilled" ? boxScoreResult.value : null,
+          playByPlay:playByPlayResult.status === "fulfilled" ? playByPlayResult.value : null,
+          loading:false,
+          error:errors.landing && errors.boxScore && errors.playByPlay ? "Unable to load game data" : null,
+          errors
+        })
+      }catch(error){
+        if(error?.name === "AbortError" || !active){
+          return
+        }
+
+        setState({ landing:null, boxScore:null, playByPlay:null, loading:false, error:message(error), errors:{ landing:null, boxScore:null, playByPlay:null } })
+      }
+    }
+
+    loadGame()
+
+    return () => {
+      active = false
+      controller.abort()
+    }
+  }, [gameId])
+
+  return state
 }
+
+export default useGameDetails
