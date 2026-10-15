@@ -79,7 +79,7 @@ describe("useTeam", () => {
   it("aborts the previous request when the abbreviation changes", async () => {
     const firstStandings = new Promise(() => {})
     getStandings.mockReturnValueOnce(firstStandings).mockResolvedValueOnce(standings)
-    const { result, rerender } = renderHook(({ abbrev }) => useTeam(abbrev), { initialProps:{ abbrev:"CAR" } })
+    const { rerender } = renderHook(({ abbrev }) => useTeam(abbrev), { initialProps:{ abbrev:"CAR" } })
 
     rerender({ abbrev:"CAR" })
     rerender({ abbrev:"CAR" })

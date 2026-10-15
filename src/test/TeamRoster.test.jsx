@@ -11,7 +11,7 @@ describe("TeamRoster", () => {
       </MemoryRouter>
     )
 
-    expect(screen.getByText("No players listed.")).toBeInTheDocument()
+    expect(screen.getAllByText("No players listed.")).toHaveLength(2)
     expect(screen.getByText("Unnamed player")).toBeInTheDocument()
     expect(screen.getByRole("heading", { name:"Goalies" })).toBeInTheDocument()
   })
