@@ -1,12 +1,9 @@
 import { nhlFetch } from "../../../services/nhlApi"
-import { getCurrentNhlSeason } from "../../../utils/dates"
 
 export function getTeamRoster(teamAbbrev, options){
-  const season = getCurrentNhlSeason()
-  return nhlFetch(`/roster/${teamAbbrev}/${season}`, options)
+  return nhlFetch(`/roster/${teamAbbrev}/current`, options)
 }
 
 export function getTeamStats(teamAbbrev, options){
-  const season = getCurrentNhlSeason()
-  return nhlFetch(`/club-stats/${teamAbbrev}/${season}/2`, options)
+  return nhlFetch(`/club-stats/${teamAbbrev}/now`, options)
 }
