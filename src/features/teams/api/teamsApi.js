@@ -1,9 +1,9 @@
 import { nhlFetch } from "../../../services/nhlApi"
 
-export function getTeamRoster(teamAbbrev){
-  return nhlFetch(`/roster/${teamAbbrev}/current`)
+export function getTeamRoster(teamAbbrev, options){
+  return nhlFetch(`/roster/${teamAbbrev}/current`, options)
 }
 
-export function getTeamStats(teamAbbrev){
-  return nhlFetch(`/club-stats/${teamAbbrev}/now`)
+export function getTeamStats(teamAbbrev, options){
+  return nhlFetch(`/club-stats/${teamAbbrev}/now`, options)
 }
