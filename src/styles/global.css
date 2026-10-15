@@ -528,6 +528,73 @@ p{
   object-fit:contain;
 }
 
+.team-detail-header{
+  display:flex;
+  align-items:center;
+  gap:1.25rem;
+}
+
+.team-detail-header img{
+  width:6rem;
+  height:6rem;
+  object-fit:contain;
+}
+
+.team-detail-header h1{
+  color:var(--text);
+  font-size:clamp(2rem, 6vw, 3.5rem);
+  letter-spacing:-0.07em;
+}
+
+.team-detail-abbrev{
+  display:inline-block;
+  color:var(--purple-bright);
+  font-size:1rem;
+  font-weight:900;
+  letter-spacing:0.12em;
+  margin-top:0.5rem;
+  text-decoration:none;
+}
+
+.team-stat-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:1rem;
+}
+
+.team-details-page > section,
+.team-details-page > .team-roster{
+  margin-top:1.25rem;
+}
+
+.roster-group{
+  margin-bottom:1rem;
+}
+
+.roster-list{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:0.5rem 1rem;
+  padding:0;
+  margin:0;
+  list-style:none;
+}
+
+.roster-list li{
+  color:var(--muted-strong);
+  border-bottom:1px solid rgba(196, 181, 253, 0.13);
+  padding:0.55rem 0;
+}
+
+.roster-list a{
+  color:var(--text);
+  text-decoration:none;
+}
+
+.muted-text{
+  color:var(--muted);
+}
+
 .team-card > span{
   color:var(--purple-bright);
   font-size:0.82rem;
@@ -564,6 +631,31 @@ p{
 }
 
 @media (max-width: 680px){
+  .panel-card,
+  .game-card,
+  .date-card,
+  .snapshot-card,
+  .error-card,
+  .state-card,
+  .empty-card{
+    backdrop-filter:none;
+    box-shadow:0 12px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  .team-detail-header{
+    align-items:flex-start;
+  }
+
+  .team-detail-header img{
+    width:4rem;
+    height:4rem;
+  }
+
+  .team-stat-grid,
+  .roster-list{
+    grid-template-columns:1fr;
+  }
+
   .dashboard-container{
     width:min(100% - 1rem, 1180px);
     padding-top:1rem;
