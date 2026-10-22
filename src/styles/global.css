@@ -119,23 +119,13 @@ a{
   margin-bottom:var(--space-6);
 }
 
-.dashboard-header-actions{
-  display:grid;
-  justify-items:end;
-  gap:var(--space-2);
-}
-
-.text-button,
 .panel-link{
   color:var(--purple-bright);
-  border:0;
-  background:transparent;
   font-size:0.86rem;
   font-weight:800;
   text-decoration:none;
 }
 
-.text-button:hover,
 .panel-link:hover{
   color:var(--text-strong);
   text-decoration:underline;
@@ -268,7 +258,6 @@ a{
   white-space:nowrap;
 }
 
-.date-card,
 .snapshot-card,
 .panel-card,
 .game-card,
@@ -279,28 +268,15 @@ a{
   background:var(--surface);
 }
 
-.date-card{
-  min-width:220px;
-  padding:var(--space-4);
-  border-radius:var(--radius-lg);
-}
-
-.date-card span,
 .snapshot-card span{
   color:var(--muted);
   font-size:0.86rem;
   font-weight:700;
 }
 
-.date-card strong{
-  display:block;
-  color:var(--text);
-  margin-top:var(--space-1);
-}
-
 .snapshot-grid{
   display:grid;
-  grid-template-columns:repeat(4, 1fr);
+  grid-template-columns:repeat(3, 1fr);
   gap:var(--space-4);
   margin-bottom:var(--space-5);
 }
@@ -358,7 +334,11 @@ a{
 }
 
 .dashboard-game-grid{
-  grid-template-columns:repeat(3, minmax(0, 1fr));
+  grid-template-columns:repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+.dashboard-game-grid .game-card{
+  min-width:0;
 }
 
 .dashboard-standings-list{
@@ -368,7 +348,7 @@ a{
 
 .dashboard-team-row{
   display:grid;
-  grid-template-columns:auto 1fr auto;
+  grid-template-columns:auto minmax(0, 1fr) auto;
   align-items:center;
   gap:var(--space-3);
   color:var(--text);
@@ -387,6 +367,16 @@ a{
 .dashboard-team-row > strong{
   display:grid;
   gap:0.2rem;
+}
+
+.dashboard-team-row > span:nth-child(2){
+  min-width:0;
+}
+
+.dashboard-team-row > span:nth-child(2) strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .dashboard-team-row > strong{
@@ -413,6 +403,11 @@ a{
 
 .dashboard-team-row span:nth-child(2) strong{
   font-size:0.9rem;
+}
+
+.dashboard-panel-footer{
+  margin-top:var(--space-4);
+  text-align:right;
 }
 
 .schedule-controls{
@@ -520,7 +515,7 @@ a{
 
 .game-card-matchup{
   display:grid;
-  grid-template-columns:1fr auto 1fr;
+  grid-template-columns:minmax(0, 1fr) auto minmax(0, 1fr);
   align-items:center;
   gap:var(--space-3);
   padding:var(--space-6) 0 var(--space-3);
@@ -536,6 +531,10 @@ a{
   font-size:clamp(1.8rem, 5vw, 2.6rem);
   letter-spacing:-0.06em;
   line-height:1;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .game-card-team span{
@@ -1069,14 +1068,6 @@ a{
   .snapshot-grid,
   .game-grid{
     grid-template-columns:1fr;
-  }
-
-  .dashboard-header-actions{
-    justify-items:stretch;
-  }
-
-  .dashboard-header-actions .text-button{
-    text-align:left;
   }
 
   .schedule-controls,

@@ -33,11 +33,10 @@ function DashboardStandings({ standings, loading, error, onRetry }){
 
   return(
     <Panel
-      eyebrow="League table"
       title="Top five teams"
-      action={<Link className="panel-link" to="/standings">Full table</Link>}
     >
       {content}
+      {!loading && !error && <div className="dashboard-panel-footer"><Link className="panel-link" to="/standings">See full standings</Link></div>}
     </Panel>
   )
 }

@@ -32,8 +32,11 @@ describe("DashboardPage", () => {
 
     render(<MemoryRouter><DashboardPage /></MemoryRouter>)
 
-    expect(screen.getByRole("heading", { name:"NHL Stats Dashboard" })).toBeInTheDocument()
-    expect(screen.getByText("Today's games")).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name:"Dashboard" })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name:"Today's games" })).toBeInTheDocument()
+    expect(screen.queryByText("Teams tracked")).not.toBeInTheDocument()
+    expect(screen.queryByRole("button", { name:"Refresh data" })).not.toBeInTheDocument()
+    expect(screen.getByRole("link", { name:"See full standings" })).toHaveAttribute("href", "/standings")
     expect(screen.getAllByText("Scheduled")).toHaveLength(3)
     expect(screen.getByText("Carolina Hurricanes")).toBeInTheDocument()
     expect(screen.getByText("Utah Mammoth")).toBeInTheDocument()

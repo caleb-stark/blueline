@@ -26,8 +26,7 @@ function DashboardGames({ games, scores, loading, error, onRetry }){
 
   return(
     <Panel
-      eyebrow="On the ice"
-      title="Today&apos;s top games"
+      title="Today&apos;s games"
       action={<Link className="panel-link" to="/games">View schedule</Link>}
     >
       {content}

@@ -10,7 +10,6 @@ function DashboardStats({ games, scores, standings, loading }){
     <section className="snapshot-grid" aria-label="League snapshot">
       <StatCard label="Today&apos;s games" value={value(games.length)} detail="Scheduled across the league" featured />
       <StatCard label="Final scores" value={value(completedGames)} detail="Completed today" />
-      <StatCard label="Teams tracked" value={value(standings.length || "—")} detail="In the current standings" />
       <StatCard label="Points leader" value={value(leaderName)} detail={loading ? "Loading standings" : leader ? `${leader.points ?? "—"} points` : "Standings unavailable"} />
     </section>
   )
