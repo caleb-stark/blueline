@@ -1,6 +1,6 @@
-function StatCard({ label, value, detail, featured = false }){
+function StatCard({ label, value, detail }){
   return(
-    <article className={`snapshot-card${featured ? " hero-stat" : ""}`}>
+    <article className="snapshot-card">
       <span>{label}</span>
       <strong>{value}</strong>
       {detail && <p className="stat-card-detail">{detail}</p>}

@@ -34,6 +34,7 @@ describe("DashboardPage", () => {
 
     expect(screen.getByRole("heading", { name:"Dashboard" })).toBeInTheDocument()
     expect(screen.getByRole("heading", { name:"Today's games" })).toBeInTheDocument()
+    expect(screen.getByText("Scheduled across the league").closest("article")).not.toHaveClass("hero-stat")
     expect(screen.queryByText("Teams tracked")).not.toBeInTheDocument()
     expect(screen.queryByRole("button", { name:"Refresh data" })).not.toBeInTheDocument()
     expect(screen.getByRole("link", { name:"See full standings" })).toHaveAttribute("href", "/standings")
