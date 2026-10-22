@@ -32,6 +32,7 @@ describe("player detail components", () => {
   it("renders game log selectors and rows", () => {
     render(<PlayerGameLog gameLog={[{ gameId:1, gameDate:"2026-10-20", opponentAbbrev:"VAN", goals:1, assists:2, points:3 }]} gameType="2" season="20262027" loading={false} error={null} onGameTypeChange={() => {}} />)
     expect(screen.getByRole("combobox")).toHaveValue("2")
+    expect(screen.getAllByText("2026-2027")).toHaveLength(2)
     expect(screen.getByText("VAN")).toBeInTheDocument()
     expect(screen.getByText("1 G · 2 A · 3 P")).toBeInTheDocument()
   })
