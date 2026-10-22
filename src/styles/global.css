@@ -442,14 +442,42 @@ a{
 
 .week-controls{
   align-items:center;
+  justify-content:center;
+  padding-block:var(--space-3);
 }
 
-.week-controls label{
-  min-width:210px;
+.week-summary{
+  display:grid;
+  min-width:190px;
+  justify-items:center;
+  gap:var(--space-1);
+  text-align:center;
 }
 
-.week-controls button{
-  white-space:nowrap;
+.week-summary strong{
+  color:var(--text-strong);
+  font-size:1.1rem;
+}
+
+.week-summary span{
+  color:var(--muted);
+  font-size:0.78rem;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.week-controls .week-nav-button{
+  display:grid;
+  width:2.5rem;
+  height:2.5rem;
+  place-items:center;
+  color:var(--muted-strong);
+  border:1px solid var(--border);
+  border-radius:var(--radius-pill);
+  background:transparent;
+  padding:0;
+  font-size:1.4rem;
+  line-height:1;
 }
 
 .schedule-week{
@@ -507,10 +535,6 @@ a{
   border-radius:var(--radius-md);
   padding:var(--space-3);
   text-decoration:none;
-}
-
-.schedule-game:hover{
-  border-color:var(--purple);
 }
 
 .schedule-game-time,
@@ -689,6 +713,11 @@ a{
 
 .game-card-live .game-card-top span{
   color:var(--red);
+}
+
+.game-card-live .game-card-team > span,
+.game-card-final .game-card-team > span{
+  font-size:1.6rem;
 }
 
 .game-card-upcoming .game-card-team span{
@@ -1235,7 +1264,8 @@ a{
   }
 
   .week-controls{
-    align-items:stretch;
+    flex-direction:row;
+    align-items:center;
   }
 
   .schedule-week{

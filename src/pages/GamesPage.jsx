@@ -31,7 +31,6 @@ function GamesPage(){
       <WeekControls
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
-        onRefresh={refetch}
       />
 
       {content}

@@ -14,6 +14,7 @@ function GameCard({ game, variant }){
   const isScoreCard = variant === "scores"
   const isUpcoming = gameState === "scheduled"
   const isLive = isScoreCard && gameState === "live"
+  const isFinal = isScoreCard && gameState === "final"
   let awayTeamAbbrev = "—"
   let homeTeamAbbrev = "—"
   let awayScoreLabel = "—"
@@ -36,7 +37,7 @@ function GameCard({ game, variant }){
   }
 
   return(
-    <article className={`game-card${isUpcoming ? " game-card-upcoming" : ""}${isLive ? " game-card-live" : ""}`}>
+    <article className={`game-card${isUpcoming ? " game-card-upcoming" : ""}${isLive ? " game-card-live" : ""}${isFinal ? " game-card-final" : ""}`}>
       <div className="game-card-top">
         <span>{getGameStatusLabel(game)}</span>
       </div>
