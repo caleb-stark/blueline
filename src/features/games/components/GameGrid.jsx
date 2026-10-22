@@ -1,6 +1,6 @@
 import GameCard from "./GameCard"
 
-function GameGrid({ games }){
+function GameGrid({ games, variant }){
   if(!Array.isArray(games)){
     return null
   }
@@ -11,6 +11,7 @@ function GameGrid({ games }){
         <GameCard
           key={game.id}
           game={game}
+          variant={variant}
         />
       ))}
     </div>

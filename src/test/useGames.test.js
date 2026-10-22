@@ -19,6 +19,7 @@ describe("useGames", () => {
     await waitFor(() => expect(result.current.loading).toBe(false))
 
     expect(result.current.games).toHaveLength(2)
+    expect(result.current.gameWeek).toHaveLength(2)
     expect(result.current.games[0].id).toBe(2026020106)
     expect(getSchedule).toHaveBeenCalledWith("2026-10-14", expect.objectContaining({ signal:expect.any(AbortSignal) }))
   })

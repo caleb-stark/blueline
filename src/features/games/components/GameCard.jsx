@@ -1,13 +1,20 @@
 import { Link } from "react-router-dom"
-import { gameHasStarted, getGameStatusLabel, getScore, getTeamAbbrev } from "../../../utils/games"
+import { gameHasStarted, getGameState, getGameStatusLabel, getScore, getTeamAbbrev, getTeamLogo } from "../../../utils/games"
 
-function GameCard({ game }){
+function GameCard({ game, variant }){
   const awayTeam = game?.awayTeam
   const homeTeam = game?.homeTeam
   const awayScore = getScore(awayTeam)
   const homeScore = getScore(homeTeam)
   const awayAbbrev = getTeamAbbrev(awayTeam)
   const homeAbbrev = getTeamAbbrev(homeTeam)
+  const awayLogo = getTeamLogo(awayTeam)
+  const homeLogo = getTeamLogo(homeTeam)
+  const gameState = getGameState(game)
+  const isScoreCard = variant === "scores"
+  const isUpcoming = gameState === "scheduled"
+  const isLive = gameState === "live"
+  const isFinal = isScoreCard && gameState === "final"
   let awayTeamAbbrev = "—"
   let homeTeamAbbrev = "—"
   let awayScoreLabel = "—"
@@ -30,7 +37,7 @@ function GameCard({ game }){
   }
 
   return(
-    <article className="game-card">
+    <article className={`game-card${variant ? ` game-card-${variant}` : ""}${isUpcoming ? " game-card-upcoming" : ""}${isLive ? " game-card-live" : ""}${isFinal ? " game-card-final" : ""}`}>
       <div className="game-card-top">
         <span>{getGameStatusLabel(game)}</span>
       </div>
@@ -38,15 +45,25 @@ function GameCard({ game }){
       <Link to={`/games/${game?.id}`} className="game-card-link">
         <div className="game-card-matchup">
           <div className="game-card-team game-card-away">
-            <strong>{awayTeamAbbrev}</strong>
-            <span>{awayScoreLabel}</span>
+            <div className="game-card-team-identity">
+              {awayLogo && <img className="game-card-logo" src={awayLogo} alt={`${awayAbbrev || "Away team"} logo`} />}
+              <div className="game-card-team-label">
+                <strong>{awayTeamAbbrev}</strong>
+                {!isUpcoming && <span>{awayScoreLabel}</span>}
+              </div>
+            </div>
           </div>
 
-          <span className="game-card-at">at</span>
+          <span className={isUpcoming ? "game-card-vs" : "game-card-at"}>{isUpcoming ? "VS" : "at"}</span>
 
           <div className="game-card-team game-card-home">
-            <strong>{homeTeamAbbrev}</strong>
-            <span>{homeScoreLabel}</span>
+            <div className="game-card-team-identity">
+              {homeLogo && <img className="game-card-logo" src={homeLogo} alt={`${homeAbbrev || "Home team"} logo`} />}
+              <div className="game-card-team-label">
+                <strong>{homeTeamAbbrev}</strong>
+                {!isUpcoming && <span>{homeScoreLabel}</span>}
+              </div>
+            </div>
           </div>
         </div>
       </Link>

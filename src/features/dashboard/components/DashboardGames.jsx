@@ -20,7 +20,7 @@ function DashboardGames({ games, scores, loading, error, onRetry }){
   if(!loading && !error){
     const topGames = mergeGames(games, scores)
     content = topGames.length
-      ? <div className="game-grid dashboard-game-grid">{topGames.map(game => <GameCard key={game.id} game={game} />)}</div>
+      ? <div className="game-grid dashboard-game-grid">{topGames.map(game => <GameCard key={game.id} game={game} variant="dashboard" />)}</div>
       : <EmptyState title="No games scheduled" message="There are no NHL games on today&apos;s schedule." />
   }
 

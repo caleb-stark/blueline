@@ -21,7 +21,9 @@ describe("GamesPage", () => {
 
     const { rerender } = render(<GamesPage />)
 
-    expect(screen.getByLabelText("Game date")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name:"Previous week" })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name:"Next week" })).toBeInTheDocument()
+    expect(screen.queryByText("Refresh data")).not.toBeInTheDocument()
     expect(screen.getByText("Loading NHL data...")).toBeInTheDocument()
 
     useGames.mockReturnValue({ games:[], loading:false, error:"network down", refetch })
@@ -29,15 +31,15 @@ describe("GamesPage", () => {
 
     fireEvent.click(screen.getByRole("button", { name:"Try again" }))
     expect(refetch).toHaveBeenCalledTimes(1)
-    expect(screen.getByLabelText("Game date")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name:"Next week" })).toBeInTheDocument()
   })
 
-  it("passes the selected date value to the hook", () => {
+  it("changes the loaded week with navigation arrows", () => {
     useGames.mockReturnValue({ games:[], loading:false, error:null, refetch:vi.fn() })
 
     render(<GamesPage />)
-    fireEvent.change(screen.getByLabelText("Game date"), { target:{ value:"2026-10-15" } })
+    fireEvent.click(screen.getByRole("button", { name:"Next week" }))
 
-    expect(useGames).toHaveBeenLastCalledWith("2026-10-15")
+    expect(useGames).toHaveBeenLastCalledWith("2026-10-26")
   })
 })

@@ -73,3 +73,42 @@ export function getCurrentNhlSeason(value = new Date()){
 
   return `${year - 1}${year}`
 }
+
+export function shiftDate(value, days){
+  const parsed = parseDate(value)
+
+  if(!parsed || !Number.isInteger(days)){
+    return null
+  }
+
+  parsed.setUTCDate(parsed.getUTCDate() + days)
+  return formatDate(parsed, "UTC")
+}
+
+export function getWeekStart(value, weekStartsOn = 1){
+  const parsed = parseDate(value)
+
+  if(!parsed || !Number.isInteger(weekStartsOn) || weekStartsOn < 0 || weekStartsOn > 6){
+    return null
+  }
+
+  const dayOffset = (parsed.getUTCDay() - weekStartsOn + 7) % 7
+  return shiftDate(value, -dayOffset)
+}
+
+export function formatGameTime(value){
+  if(typeof value !== "string"){
+    return "Time unavailable"
+  }
+
+  const date = new Date(value)
+  if(Number.isNaN(date.getTime())){
+    return "Time unavailable"
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone:NHL_TIME_ZONE,
+    hour:"numeric",
+    minute:"2-digit"
+  }).format(date)
+}

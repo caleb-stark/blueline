@@ -440,6 +440,192 @@ a{
   font-weight:800;
 }
 
+.week-controls{
+  align-items:center;
+  justify-content:center;
+  padding-block:var(--space-3);
+}
+
+.week-summary{
+  display:grid;
+  min-width:190px;
+  justify-items:center;
+  gap:var(--space-1);
+  text-align:center;
+}
+
+.week-summary strong{
+  color:var(--text-strong);
+  font-size:1.1rem;
+}
+
+.week-summary span{
+  color:var(--muted);
+  font-size:0.78rem;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.date-controls{
+  align-items:center;
+  justify-content:center;
+  padding-block:var(--space-3);
+}
+
+.date-summary{
+  display:grid;
+  min-width:190px;
+  justify-items:center;
+  gap:var(--space-1);
+  text-align:center;
+}
+
+.date-summary strong{
+  color:var(--text-strong);
+  font-size:1.1rem;
+}
+
+.date-summary span{
+  color:var(--muted);
+  font-size:0.78rem;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.week-controls .week-nav-button{
+  display:grid;
+  width:2.5rem;
+  height:2.5rem;
+  place-items:center;
+  color:var(--muted-strong);
+  border:1px solid var(--border);
+  border-radius:var(--radius-pill);
+  background:transparent;
+  padding:0;
+  font-size:1.4rem;
+  line-height:1;
+}
+
+.date-controls .date-nav-button{
+  display:grid;
+  width:2.5rem;
+  height:2.5rem;
+  place-items:center;
+  color:var(--muted-strong);
+  border:1px solid var(--border);
+  border-radius:var(--radius-pill);
+  background:transparent;
+  padding:0;
+  font-size:1.4rem;
+  line-height:1;
+}
+
+.schedule-week{
+  display:grid;
+  grid-template-columns:repeat(7, minmax(0, 1fr));
+  gap:var(--space-3);
+}
+
+.schedule-day{
+  min-width:0;
+  min-height:220px;
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  background:var(--surface);
+  overflow:hidden;
+}
+
+.schedule-day-today{
+  border-color:var(--purple-bright);
+  background:rgba(192, 132, 252, 0.06);
+}
+
+.schedule-day-header{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:var(--space-2);
+  padding:var(--space-3);
+  border-bottom:1px solid var(--border-soft);
+}
+
+.schedule-day-header span{
+  color:var(--purple-bright);
+  font-size:0.8rem;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.schedule-day-header strong{
+  color:var(--muted-strong);
+  font-size:0.82rem;
+}
+
+.schedule-day-games{
+  display:grid;
+  gap:var(--space-2);
+  padding:var(--space-2);
+}
+
+.schedule-game{
+  display:grid;
+  gap:var(--space-2);
+  color:inherit;
+  border:1px solid var(--border-soft);
+  border-radius:var(--radius-md);
+  padding:var(--space-3);
+  text-decoration:none;
+}
+
+.schedule-game-time,
+.schedule-day-empty{
+  color:var(--muted);
+  font-size:0.75rem;
+  font-weight:700;
+}
+
+.schedule-matchup{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:var(--space-1);
+}
+
+.schedule-team{
+  display:grid;
+  justify-items:center;
+  gap:var(--space-1);
+  min-width:0;
+}
+
+.schedule-team img{
+  width:2.5rem;
+  height:2.5rem;
+  object-fit:contain;
+}
+
+.schedule-team strong{
+  color:var(--text-strong);
+  font-size:0.84rem;
+}
+
+.schedule-team b{
+  color:var(--purple-bright);
+  font-size:1rem;
+}
+
+.schedule-vs{
+  color:var(--muted);
+  font-size:0.72rem;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.schedule-day-empty{
+  padding:var(--space-3) var(--space-2);
+  text-align:center;
+}
+
 .ticker-list{
   display:flex;
   gap:var(--space-3);
@@ -513,13 +699,31 @@ a{
 }
 
 .game-card-team{
+  --team-abbrev-size:clamp(1.8rem, 5vw, 2.6rem);
   display:grid;
+  justify-items:center;
+  gap:0.35rem;
+  text-align:center;
+}
+
+.game-card-team-identity{
+  display:flex;
+  align-items:flex-start;
+  min-width:0;
+  gap:var(--space-3);
+  justify-content:center;
+}
+
+.game-card-team-label{
+  display:grid;
+  min-width:0;
+  justify-items:center;
   gap:0.35rem;
 }
 
 .game-card-team strong{
   color:var(--text);
-  font-size:clamp(1.8rem, 5vw, 2.6rem);
+  font-size:var(--team-abbrev-size);
   letter-spacing:-0.06em;
   line-height:1;
   min-width:0;
@@ -528,21 +732,90 @@ a{
   white-space:nowrap;
 }
 
-.game-card-team span{
+.game-card-team-label span{
   color:var(--purple-bright);
   font-size:1.3rem;
   font-weight:900;
   line-height:1;
 }
 
+.game-card-logo{
+  width:3.5rem;
+  height:3.5rem;
+  object-fit:contain;
+  flex:0 0 auto;
+  transform:translateY(calc((var(--team-abbrev-size) - 3.5rem) / 2));
+}
+
+.game-card-away .game-card-team-identity{
+  justify-content:center;
+}
+
+.game-card-home .game-card-team-identity{
+  flex-direction:row-reverse;
+  justify-content:center;
+}
+
+.game-card-vs{
+  color:var(--muted);
+  font-size:0.85rem;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.game-card-live .game-card-top span{
+  color:var(--red);
+}
+
+.game-card-live .game-card-team-label > span,
+.game-card-final .game-card-team-label > span{
+  font-size:1.6rem;
+}
+
+.game-card-upcoming .game-card-team-label span{
+  display:none;
+}
+
 .game-card-away{
-  justify-items:start;
-  text-align:left;
+  justify-items:center;
+  text-align:center;
 }
 
 .game-card-home{
-  justify-items:end;
-  text-align:right;
+  justify-items:center;
+  text-align:center;
+}
+
+.game-card-dashboard .game-card-matchup{
+  gap:var(--space-2);
+  padding-block:var(--space-5) var(--space-2);
+}
+
+.game-card-dashboard .game-card-team-identity{
+  gap:var(--space-1);
+}
+
+.game-card-dashboard .game-card-team{
+  --team-abbrev-size:clamp(0.95rem, 2vw, 1.35rem);
+}
+
+.game-card-dashboard .game-card-team-label{
+  gap:var(--space-1);
+}
+
+.game-card-dashboard .game-card-logo{
+  width:2rem;
+  height:2rem;
+  transform:translateY(calc((var(--team-abbrev-size) - 2rem) / 2));
+}
+
+.game-card-dashboard .game-card-team strong{
+  font-size:var(--team-abbrev-size);
+}
+
+.game-card-dashboard .game-card-vs,
+.game-card-dashboard .game-card-at{
+  font-size:0.72rem;
 }
 
 .game-card-at{
@@ -981,6 +1254,10 @@ a{
   .dashboard-content-grid{
     grid-template-columns:1fr;
   }
+
+  .schedule-week{
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 680px){
@@ -1068,6 +1345,24 @@ a{
   .empty-card{
     align-items:stretch;
     flex-direction:column;
+  }
+
+  .week-controls{
+    flex-direction:row;
+    align-items:center;
+  }
+
+  .date-controls{
+    flex-direction:row;
+    align-items:center;
+  }
+
+  .schedule-week{
+    grid-template-columns:1fr;
+  }
+
+  .schedule-day{
+    min-height:0;
   }
 
   .standings-row{
