@@ -3,6 +3,7 @@ import { getSchedule } from "../api/gamesApi"
 
 function useGames(date){
   const [games, setGames] = useState([])
+  const [gameWeek, setGameWeek] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [reloadKey, setReloadKey] = useState(0)
@@ -35,6 +36,7 @@ function useGames(date){
         }
 
         if(active){
+          setGameWeek(gameWeek)
           setGames(selectedGames)
           setLoading(false)
         }
@@ -45,6 +47,7 @@ function useGames(date){
 
         if(active){
           setGames([])
+          setGameWeek([])
           setError(requestError?.message || "Unable to load games")
           setLoading(false)
         }
@@ -61,6 +64,7 @@ function useGames(date){
 
   return {
     games,
+    gameWeek,
     loading,
     error,
     refetch

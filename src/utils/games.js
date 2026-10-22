@@ -26,6 +26,18 @@ export function getTeamName(team){
   return getTeamAbbrev(team)
 }
 
+export function getTeamLogo(team){
+  if(typeof team?.logo === "string" && team.logo){
+    return team.logo
+  }
+
+  if(typeof team?.teamLogo === "string" && team.teamLogo){
+    return team.teamLogo
+  }
+
+  return null
+}
+
 export function getScore(team){
   if(typeof team?.score === "number" && Number.isFinite(team.score)){
     return team.score

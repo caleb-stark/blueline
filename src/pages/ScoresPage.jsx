@@ -32,7 +32,7 @@ function ScoresPage(){
         onDateChange={setSelectedDate}
         onRefresh={refetch}
       />
-      {content}
+      {loading || error ? content : <GameGrid games={games} variant="scores" />}
     </div>
   )
 }
