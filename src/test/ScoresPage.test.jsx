@@ -23,5 +23,8 @@ describe("ScoresPage", () => {
 
     expect(screen.getAllByText("Final")).toHaveLength(2)
     expect(screen.getByRole("link", { name:/FLA.*at.*BUF/ })).toHaveAttribute("href", "/games/2026020087")
+    expect(screen.getByRole("button", { name:"Previous day" })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name:"Next day" })).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name:/Refresh data/i })).not.toBeInTheDocument()
   })
 })

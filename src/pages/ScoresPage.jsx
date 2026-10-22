@@ -1,7 +1,7 @@
 import { useState } from "react"
 import useScores from "../features/games/hooks/useScores"
 import GameGrid from "../features/games/components/GameGrid"
-import ScheduleControls from "../features/games/components/ScheduleControls"
+import DateControls from "../features/games/components/DateControls"
 import Loading from "../components/ui/Loading"
 import ErrorMessage from "../components/ui/ErrorMessage"
 import EmptyState from "../components/ui/EmptyState"
@@ -10,7 +10,7 @@ import { formatDate } from "../utils/dates"
 function ScoresPage(){
   const [selectedDate, setSelectedDate] = useState(() => formatDate())
   const { games, loading, error, refetch } = useScores(selectedDate)
-  let content = <GameGrid games={games} />
+  let content = <GameGrid games={games} variant="scores" />
 
   if(loading){
     content = <Loading />
@@ -27,12 +27,11 @@ function ScoresPage(){
   return (
     <div>
       <h1 className="page-title">Scores</h1>
-      <ScheduleControls
+      <DateControls
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
-        onRefresh={refetch}
       />
-      {loading || error ? content : <GameGrid games={games} variant="scores" />}
+      {content}
     </div>
   )
 }

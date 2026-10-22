@@ -37,7 +37,7 @@ function GameCard({ game, variant }){
   }
 
   return(
-    <article className={`game-card${isUpcoming ? " game-card-upcoming" : ""}${isLive ? " game-card-live" : ""}${isFinal ? " game-card-final" : ""}`}>
+    <article className={`game-card${variant ? ` game-card-${variant}` : ""}${isUpcoming ? " game-card-upcoming" : ""}${isLive ? " game-card-live" : ""}${isFinal ? " game-card-final" : ""}`}>
       <div className="game-card-top">
         <span>{getGameStatusLabel(game)}</span>
       </div>
@@ -47,9 +47,11 @@ function GameCard({ game, variant }){
           <div className="game-card-team game-card-away">
             <div className="game-card-team-identity">
               {awayLogo && <img className="game-card-logo" src={awayLogo} alt={`${awayAbbrev || "Away team"} logo`} />}
-              <strong>{awayTeamAbbrev}</strong>
+              <div className="game-card-team-label">
+                <strong>{awayTeamAbbrev}</strong>
+                {!isUpcoming && <span>{awayScoreLabel}</span>}
+              </div>
             </div>
-            {!isUpcoming && <span>{awayScoreLabel}</span>}
           </div>
 
           <span className={isUpcoming ? "game-card-vs" : "game-card-at"}>{isUpcoming ? "VS" : "at"}</span>
@@ -57,9 +59,11 @@ function GameCard({ game, variant }){
           <div className="game-card-team game-card-home">
             <div className="game-card-team-identity">
               {homeLogo && <img className="game-card-logo" src={homeLogo} alt={`${homeAbbrev || "Home team"} logo`} />}
-              <strong>{homeTeamAbbrev}</strong>
+              <div className="game-card-team-label">
+                <strong>{homeTeamAbbrev}</strong>
+                {!isUpcoming && <span>{homeScoreLabel}</span>}
+              </div>
             </div>
-            {!isUpcoming && <span>{homeScoreLabel}</span>}
           </div>
         </div>
       </Link>

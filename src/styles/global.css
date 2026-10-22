@@ -466,7 +466,47 @@ a{
   text-transform:uppercase;
 }
 
+.date-controls{
+  align-items:center;
+  justify-content:center;
+  padding-block:var(--space-3);
+}
+
+.date-summary{
+  display:grid;
+  min-width:190px;
+  justify-items:center;
+  gap:var(--space-1);
+  text-align:center;
+}
+
+.date-summary strong{
+  color:var(--text-strong);
+  font-size:1.1rem;
+}
+
+.date-summary span{
+  color:var(--muted);
+  font-size:0.78rem;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
 .week-controls .week-nav-button{
+  display:grid;
+  width:2.5rem;
+  height:2.5rem;
+  place-items:center;
+  color:var(--muted-strong);
+  border:1px solid var(--border);
+  border-radius:var(--radius-pill);
+  background:transparent;
+  padding:0;
+  font-size:1.4rem;
+  line-height:1;
+}
+
+.date-controls .date-nav-button{
   display:grid;
   width:2.5rem;
   height:2.5rem;
@@ -660,7 +700,9 @@ a{
 
 .game-card-team{
   display:grid;
+  justify-items:center;
   gap:0.35rem;
+  text-align:center;
 }
 
 .game-card-team-identity{
@@ -668,6 +710,14 @@ a{
   align-items:center;
   min-width:0;
   gap:var(--space-3);
+  justify-content:center;
+}
+
+.game-card-team-label{
+  display:grid;
+  min-width:0;
+  justify-items:center;
+  gap:0.35rem;
 }
 
 .game-card-team strong{
@@ -681,7 +731,7 @@ a{
   white-space:nowrap;
 }
 
-.game-card-team span{
+.game-card-team-label span{
   color:var(--purple-bright);
   font-size:1.3rem;
   font-weight:900;
@@ -696,12 +746,12 @@ a{
 }
 
 .game-card-away .game-card-team-identity{
-  justify-content:flex-start;
+  justify-content:center;
 }
 
 .game-card-home .game-card-team-identity{
   flex-direction:row-reverse;
-  justify-content:flex-start;
+  justify-content:center;
 }
 
 .game-card-vs{
@@ -715,23 +765,50 @@ a{
   color:var(--red);
 }
 
-.game-card-live .game-card-team > span,
-.game-card-final .game-card-team > span{
+.game-card-live .game-card-team-label > span,
+.game-card-final .game-card-team-label > span{
   font-size:1.6rem;
 }
 
-.game-card-upcoming .game-card-team span{
+.game-card-upcoming .game-card-team-label span{
   display:none;
 }
 
 .game-card-away{
-  justify-items:start;
-  text-align:left;
+  justify-items:center;
+  text-align:center;
 }
 
 .game-card-home{
-  justify-items:end;
-  text-align:right;
+  justify-items:center;
+  text-align:center;
+}
+
+.game-card-dashboard .game-card-matchup{
+  gap:var(--space-2);
+  padding-block:var(--space-5) var(--space-2);
+}
+
+.game-card-dashboard .game-card-team-identity{
+  gap:var(--space-1);
+}
+
+.game-card-dashboard .game-card-team-label{
+  gap:var(--space-1);
+}
+
+.game-card-dashboard .game-card-logo{
+  width:2.25rem;
+  height:2.25rem;
+}
+
+.game-card-dashboard .game-card-team strong{
+  font-size:clamp(1.15rem, 2.5vw, 1.8rem);
+}
+
+.game-card-dashboard .game-card-vs,
+.game-card-dashboard .game-card-at{
+  font-size:0.72rem;
 }
 
 .game-card-at{
@@ -1264,6 +1341,11 @@ a{
   }
 
   .week-controls{
+    flex-direction:row;
+    align-items:center;
+  }
+
+  .date-controls{
     flex-direction:row;
     align-items:center;
   }

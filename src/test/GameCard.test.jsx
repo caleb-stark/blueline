@@ -20,6 +20,17 @@ describe("GameCard", () => {
     expect(screen.getByRole("link")).toHaveAttribute("href", "/games/2026020087")
   })
 
+  it("centers each score within its team column", () => {
+    render(
+      <MemoryRouter>
+        <GameCard game={scoreFixture.games[0]} />
+      </MemoryRouter>
+    )
+
+    expect(screen.getByText("3").closest(".game-card-team")).toHaveClass("game-card-away")
+    expect(screen.getByText("5").closest(".game-card-team")).toHaveClass("game-card-home")
+  })
+
   it("shows logos on score cards when the API provides them", () => {
     render(
       <MemoryRouter>
