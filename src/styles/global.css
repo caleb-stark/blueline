@@ -699,6 +699,7 @@ a{
 }
 
 .game-card-team{
+  --team-abbrev-size:clamp(1.8rem, 5vw, 2.6rem);
   display:grid;
   justify-items:center;
   gap:0.35rem;
@@ -722,7 +723,7 @@ a{
 
 .game-card-team strong{
   color:var(--text);
-  font-size:clamp(1.8rem, 5vw, 2.6rem);
+  font-size:var(--team-abbrev-size);
   letter-spacing:-0.06em;
   line-height:1;
   min-width:0;
@@ -743,6 +744,7 @@ a{
   height:3.5rem;
   object-fit:contain;
   flex:0 0 auto;
+  transform:translateY(calc((var(--team-abbrev-size) - 3.5rem) / 2));
 }
 
 .game-card-away .game-card-team-identity{
@@ -793,6 +795,10 @@ a{
   gap:var(--space-1);
 }
 
+.game-card-dashboard .game-card-team{
+  --team-abbrev-size:clamp(0.95rem, 2vw, 1.35rem);
+}
+
 .game-card-dashboard .game-card-team-label{
   gap:var(--space-1);
 }
@@ -800,10 +806,11 @@ a{
 .game-card-dashboard .game-card-logo{
   width:2rem;
   height:2rem;
+  transform:translateY(calc((var(--team-abbrev-size) - 2rem) / 2));
 }
 
 .game-card-dashboard .game-card-team strong{
-  font-size:clamp(0.95rem, 2vw, 1.35rem);
+  font-size:var(--team-abbrev-size);
 }
 
 .game-card-dashboard .game-card-vs,
