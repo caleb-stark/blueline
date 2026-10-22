@@ -115,6 +115,32 @@ a{
   padding:var(--space-8) 0 var(--space-16);
 }
 
+.dashboard-header{
+  margin-bottom:var(--space-6);
+}
+
+.dashboard-header-actions{
+  display:grid;
+  justify-items:end;
+  gap:var(--space-2);
+}
+
+.text-button,
+.panel-link{
+  color:var(--purple-bright);
+  border:0;
+  background:transparent;
+  font-size:0.86rem;
+  font-weight:800;
+  text-decoration:none;
+}
+
+.text-button:hover,
+.panel-link:hover{
+  color:var(--text-strong);
+  text-decoration:underline;
+}
+
 .page-title{
   color:var(--text);
   font-size:clamp(2rem, 5vw, 3.4rem);
@@ -292,6 +318,17 @@ a{
   margin-top:var(--space-3);
 }
 
+.stat-card-detail,
+.dashboard-team-row small{
+  color:var(--muted);
+  font-size:0.78rem;
+  font-weight:700;
+}
+
+.stat-card-detail{
+  margin-top:var(--space-2);
+}
+
 .hero-stat{
   background:var(--purple-dark);
 }
@@ -301,6 +338,81 @@ a{
   border-radius:var(--radius-lg);
   padding:var(--space-5);
   margin-bottom:var(--space-5);
+}
+
+.dashboard-content-grid{
+  display:grid;
+  grid-template-columns:minmax(0, 1.45fr) minmax(300px, 0.8fr);
+  gap:var(--space-5);
+  align-items:start;
+}
+
+.dashboard-content-grid .panel-card{
+  min-width:0;
+}
+
+.dashboard-content-grid .error-card,
+.dashboard-content-grid .empty-card,
+.dashboard-content-grid .state-card{
+  margin-bottom:0;
+}
+
+.dashboard-game-grid{
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+}
+
+.dashboard-standings-list{
+  display:grid;
+  gap:var(--space-2);
+}
+
+.dashboard-team-row{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:var(--space-3);
+  color:var(--text);
+  border:1px solid var(--border-soft);
+  border-radius:var(--radius-md);
+  padding:var(--space-3);
+  text-decoration:none;
+}
+
+.dashboard-team-row:hover{
+  border-color:var(--purple);
+  background:var(--tint-faint);
+}
+
+.dashboard-team-row > span:nth-child(2),
+.dashboard-team-row > strong{
+  display:grid;
+  gap:0.2rem;
+}
+
+.dashboard-team-row > strong{
+  justify-items:end;
+  color:var(--text-strong);
+  font-size:1.2rem;
+}
+
+.dashboard-team-row > strong small{
+  font-size:0.65rem;
+  letter-spacing:0.08em;
+}
+
+.dashboard-team-rank{
+  display:grid;
+  width:1.8rem;
+  height:1.8rem;
+  place-items:center;
+  color:var(--purple-bright);
+  border-radius:var(--radius-pill);
+  background:var(--tint);
+  font-weight:900;
+}
+
+.dashboard-team-row span:nth-child(2) strong{
+  font-size:0.9rem;
 }
 
 .schedule-controls{
@@ -875,6 +987,10 @@ a{
   .game-grid{
     grid-template-columns:repeat(2, 1fr);
   }
+
+  .dashboard-content-grid{
+    grid-template-columns:1fr;
+  }
 }
 
 @media (max-width: 680px){
@@ -953,6 +1069,14 @@ a{
   .snapshot-grid,
   .game-grid{
     grid-template-columns:1fr;
+  }
+
+  .dashboard-header-actions{
+    justify-items:stretch;
+  }
+
+  .dashboard-header-actions .text-button{
+    text-align:left;
   }
 
   .schedule-controls,
