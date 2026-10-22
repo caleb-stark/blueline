@@ -608,6 +608,97 @@ a{
   margin-bottom:0;
 }
 
+.player-detail-header{
+  display:flex;
+  align-items:center;
+  gap:var(--space-5);
+  margin-bottom:var(--title-gap);
+}
+
+.player-detail-header img{
+  width:8rem;
+  height:8rem;
+  object-fit:contain;
+}
+
+.player-detail-meta{
+  color:var(--muted);
+}
+
+.player-details-page > .panel-card,
+.player-details-page > .error-card,
+.player-details-page > .empty-card{
+  margin-bottom:var(--space-5);
+}
+
+.player-stat-block + .player-stat-block{
+  margin-top:var(--space-5);
+}
+
+.player-stat-block h3{
+  color:var(--purple-bright);
+  margin-bottom:var(--space-2);
+}
+
+.player-stat-grid{
+  display:grid;
+  grid-template-columns:repeat(6, 1fr);
+  gap:var(--space-2);
+}
+
+.player-stat-grid .snapshot-card{
+  border-radius:var(--radius-md);
+  padding:var(--space-3);
+}
+
+.player-stat-grid .snapshot-card strong{
+  font-size:1.5rem;
+}
+
+.player-log-controls{
+  display:flex;
+  gap:var(--space-4);
+  margin-bottom:var(--space-4);
+}
+
+.player-log-controls label{
+  display:grid;
+  gap:var(--space-2);
+  color:var(--muted);
+  font-weight:800;
+}
+
+.player-log-controls select{
+  appearance:none;
+  color:var(--text);
+  border:1px solid var(--border-input);
+  border-radius:var(--radius-sm);
+  background:var(--surface-strong);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23ddd6fe' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 6 5 5 5-5'/%3E%3C/svg%3E");
+  background-position:right var(--space-3) center;
+  background-repeat:no-repeat;
+  background-size:1rem;
+  padding:var(--space-2) var(--space-8) var(--space-2) var(--space-3);
+}
+
+.player-log-list{
+  display:grid;
+  gap:var(--space-2);
+}
+
+.player-log-row{
+  display:grid;
+  grid-template-columns:8rem 1fr auto;
+  gap:var(--space-4);
+  color:var(--muted-strong);
+  border-bottom:1px solid var(--border-soft);
+  padding:var(--space-2) 0;
+}
+
+.error-text{
+  color:var(--red);
+}
+
 .game-detail-header{
   margin-bottom:var(--title-gap);
 }
@@ -818,6 +909,30 @@ a{
   .team-detail-header img{
     width:4rem;
     height:4rem;
+  }
+
+  .player-detail-header{
+    align-items:flex-start;
+  }
+
+  .player-detail-header img{
+    width:5rem;
+    height:5rem;
+  }
+
+  .player-stat-grid{
+    grid-template-columns:repeat(3, 1fr);
+  }
+
+  .player-log-controls,
+  .player-log-row{
+    grid-template-columns:1fr;
+    flex-direction:column;
+  }
+
+  .player-log-row{
+    display:grid;
+    gap:var(--space-1);
   }
 
   .game-detail-score{
