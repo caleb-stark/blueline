@@ -669,11 +669,15 @@ a{
 }
 
 .player-log-controls select{
-  appearance:auto;
+  appearance:none;
   color:var(--text);
   border:1px solid var(--border-input);
   border-radius:var(--radius-sm);
   background:var(--surface-strong);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23ddd6fe' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 6 5 5 5-5'/%3E%3C/svg%3E");
+  background-position:right var(--space-3) center;
+  background-repeat:no-repeat;
+  background-size:1rem;
   padding:var(--space-2) var(--space-8) var(--space-2) var(--space-3);
 }
 
