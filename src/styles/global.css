@@ -469,7 +469,7 @@ a{
 
 .schedule-day-today{
   border-color:var(--purple-bright);
-  box-shadow:inset 0 3px 0 var(--purple-bright);
+  background:rgba(192, 132, 252, 0.06);
 }
 
 .schedule-day-header{
@@ -639,6 +639,13 @@ a{
   gap:0.35rem;
 }
 
+.game-card-team-identity{
+  display:flex;
+  align-items:center;
+  min-width:0;
+  gap:var(--space-3);
+}
+
 .game-card-team strong{
   color:var(--text);
   font-size:clamp(1.8rem, 5vw, 2.6rem);
@@ -658,10 +665,19 @@ a{
 }
 
 .game-card-logo{
-  width:2.75rem;
-  height:2.75rem;
+  width:3.5rem;
+  height:3.5rem;
   object-fit:contain;
-  justify-self:center;
+  flex:0 0 auto;
+}
+
+.game-card-away .game-card-team-identity{
+  justify-content:flex-start;
+}
+
+.game-card-home .game-card-team-identity{
+  flex-direction:row-reverse;
+  justify-content:flex-start;
 }
 
 .game-card-vs{

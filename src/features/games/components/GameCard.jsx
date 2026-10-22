@@ -12,7 +12,7 @@ function GameCard({ game, variant }){
   const homeLogo = getTeamLogo(homeTeam)
   const gameState = getGameState(game)
   const isScoreCard = variant === "scores"
-  const isUpcoming = isScoreCard && gameState === "scheduled"
+  const isUpcoming = gameState === "scheduled"
   const isLive = isScoreCard && gameState === "live"
   let awayTeamAbbrev = "—"
   let homeTeamAbbrev = "—"
@@ -44,16 +44,20 @@ function GameCard({ game, variant }){
       <Link to={`/games/${game?.id}`} className="game-card-link">
         <div className="game-card-matchup">
           <div className="game-card-team game-card-away">
-            {awayLogo && <img className="game-card-logo" src={awayLogo} alt={`${awayAbbrev || "Away team"} logo`} />}
-            <strong>{awayTeamAbbrev}</strong>
+            <div className="game-card-team-identity">
+              {awayLogo && <img className="game-card-logo" src={awayLogo} alt={`${awayAbbrev || "Away team"} logo`} />}
+              <strong>{awayTeamAbbrev}</strong>
+            </div>
             {!isUpcoming && <span>{awayScoreLabel}</span>}
           </div>
 
           <span className={isUpcoming ? "game-card-vs" : "game-card-at"}>{isUpcoming ? "VS" : "at"}</span>
 
           <div className="game-card-team game-card-home">
-            {homeLogo && <img className="game-card-logo" src={homeLogo} alt={`${homeAbbrev || "Home team"} logo`} />}
-            <strong>{homeTeamAbbrev}</strong>
+            <div className="game-card-team-identity">
+              {homeLogo && <img className="game-card-logo" src={homeLogo} alt={`${homeAbbrev || "Home team"} logo`} />}
+              <strong>{homeTeamAbbrev}</strong>
+            </div>
             {!isUpcoming && <span>{homeScoreLabel}</span>}
           </div>
         </div>

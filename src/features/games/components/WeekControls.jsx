@@ -1,4 +1,4 @@
-import { shiftDate } from "../../../utils/dates"
+import { getWeekStart, shiftDate } from "../../../utils/dates"
 
 function WeekControls({ selectedDate, onDateChange, onRefresh }){
   return(
@@ -6,7 +6,7 @@ function WeekControls({ selectedDate, onDateChange, onRefresh }){
       <button onClick={() => onDateChange(shiftDate(selectedDate, -7))}>Previous week</button>
       <label>
         Week starting
-        <input value={selectedDate} type="date" onChange={event => onDateChange(event.target.value)} />
+        <input value={selectedDate} type="date" onChange={event => onDateChange(getWeekStart(event.target.value))} />
       </label>
       <button onClick={() => onDateChange(shiftDate(selectedDate, 7))}>Next week</button>
       <button onClick={onRefresh}>Refresh data</button>

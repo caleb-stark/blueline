@@ -85,6 +85,17 @@ export function shiftDate(value, days){
   return formatDate(parsed, "UTC")
 }
 
+export function getWeekStart(value, weekStartsOn = 1){
+  const parsed = parseDate(value)
+
+  if(!parsed || !Number.isInteger(weekStartsOn) || weekStartsOn < 0 || weekStartsOn > 6){
+    return null
+  }
+
+  const dayOffset = (parsed.getUTCDay() - weekStartsOn + 7) % 7
+  return shiftDate(value, -dayOffset)
+}
+
 export function formatGameTime(value){
   if(typeof value !== "string"){
     return "Time unavailable"

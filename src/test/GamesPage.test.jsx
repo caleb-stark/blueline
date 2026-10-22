@@ -38,6 +38,6 @@ describe("GamesPage", () => {
     render(<GamesPage />)
     fireEvent.change(screen.getByLabelText("Week starting"), { target:{ value:"2026-10-15" } })
 
-    expect(useGames).toHaveBeenLastCalledWith("2026-10-15")
+    expect(useGames).toHaveBeenLastCalledWith("2026-10-12")
   })
 })

@@ -5,10 +5,10 @@ import WeekControls from "../features/games/components/WeekControls"
 import Loading from "../components/ui/Loading"
 import ErrorMessage from "../components/ui/ErrorMessage"
 import EmptyState from "../components/ui/EmptyState"
-import { formatDate } from "../utils/dates"
+import { formatDate, getWeekStart } from "../utils/dates"
 
 function GamesPage(){
-  const [selectedDate, setSelectedDate] = useState(() => formatDate())
+  const [selectedDate, setSelectedDate] = useState(() => getWeekStart(formatDate()))
 
   const { gameWeek, loading, error, refetch } = useGames(selectedDate)
   let content = <ScheduleWeek gameWeek={gameWeek} />

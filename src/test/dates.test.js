@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { formatDate, getCurrentNhlSeason, isValidDateString, parseDate } from "../utils/dates"
+import { formatDate, getCurrentNhlSeason, getWeekStart, isValidDateString, parseDate } from "../utils/dates"
 
 describe("date utilities", () => {
   it("formats dates in the NHL time zone", () => {
@@ -22,5 +22,10 @@ describe("date utilities", () => {
   it("returns the NHL season across the season boundary", () => {
     expect(getCurrentNhlSeason(new Date("2026-09-30T16:00:00.000Z"))).toBe("20252026")
     expect(getCurrentNhlSeason(new Date("2026-10-01T16:00:00.000Z"))).toBe("20262027")
+  })
+
+  it("normalizes schedule dates to a Monday week start", () => {
+    expect(getWeekStart("2026-10-22")).toBe("2026-10-19")
+    expect(getWeekStart("2026-10-19")).toBe("2026-10-19")
   })
 })

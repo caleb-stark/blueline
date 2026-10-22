@@ -39,7 +39,7 @@ describe("GameCard", () => {
     expect(screen.getByAltText("BUF logo")).toHaveAttribute("src", "buf.svg")
   })
 
-  it("does not render scores for a scheduled game", () => {
+  it("uses a versus label without score placeholders for a scheduled game", () => {
     render(
       <MemoryRouter>
         <GameCard game={{ id:2026020106, gameState:"FUT", awayTeam:{ abbrev:"MTL" }, homeTeam:{ abbrev:"WSH" } }} />
@@ -47,7 +47,8 @@ describe("GameCard", () => {
     )
 
     expect(screen.getByText("Scheduled")).toBeInTheDocument()
-    expect(screen.getAllByText("—")).toHaveLength(2)
+    expect(screen.getByText("VS")).toBeInTheDocument()
+    expect(screen.queryAllByText("—")).toHaveLength(0)
   })
 
   it("uses a neutral versus label for upcoming score cards", () => {
