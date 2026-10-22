@@ -707,7 +707,7 @@ a{
 
 .game-card-team-identity{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   min-width:0;
   gap:var(--space-3);
   justify-content:center;
@@ -798,12 +798,12 @@ a{
 }
 
 .game-card-dashboard .game-card-logo{
-  width:2.25rem;
-  height:2.25rem;
+  width:2rem;
+  height:2rem;
 }
 
 .game-card-dashboard .game-card-team strong{
-  font-size:clamp(1.15rem, 2.5vw, 1.8rem);
+  font-size:clamp(0.95rem, 2vw, 1.35rem);
 }
 
 .game-card-dashboard .game-card-vs,
