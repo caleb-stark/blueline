@@ -13,7 +13,7 @@ function GameCard({ game, variant }){
   const gameState = getGameState(game)
   const isScoreCard = variant === "scores"
   const isUpcoming = gameState === "scheduled"
-  const isLive = isScoreCard && gameState === "live"
+  const isLive = gameState === "live"
   const isFinal = isScoreCard && gameState === "final"
   let awayTeamAbbrev = "—"
   let homeTeamAbbrev = "—"

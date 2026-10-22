@@ -89,4 +89,17 @@ describe("GameCard", () => {
 
     expect(screen.getByText("Live").closest("article")).toHaveClass("game-card-live")
   })
+
+  it("marks live dashboard cards with the live class", () => {
+    render(
+      <MemoryRouter>
+        <GameCard
+          variant="dashboard"
+          game={{ id:2026020106, gameState:"LIVE", awayTeam:{ abbrev:"MTL", score:1 }, homeTeam:{ abbrev:"WSH", score:2 } }}
+        />
+      </MemoryRouter>
+    )
+
+    expect(screen.getByText("Live").closest("article")).toHaveClass("game-card-live")
+  })
 })
