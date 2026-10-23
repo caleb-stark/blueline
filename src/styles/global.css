@@ -1146,6 +1146,10 @@ a{
   line-height:1;
 }
 
+.game-scoreboard-scheduled .game-detail-team-identity{
+  align-items:center;
+}
+
 .game-detail-score strong{
   color:var(--purple-bright);
   font-size:clamp(2.5rem, 8vw, 4.5rem);
