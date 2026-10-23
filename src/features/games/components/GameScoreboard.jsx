@@ -13,11 +13,13 @@ function TeamScore({ team, side }){
 
   return(
     <div className={`game-detail-team game-detail-team-${side}`}>
-      <div className="game-detail-team-copy">
-        <span>{teamLabel(team)}</span>
-        <strong>{score(team)}</strong>
+      <div className="game-detail-team-identity">
+        {logo && <img className="game-detail-team-logo" src={logo} alt={`${teamLabel(team)} logo`} />}
+        <div className="game-detail-team-copy">
+          <span>{teamLabel(team)}</span>
+          <strong>{score(team)}</strong>
+        </div>
       </div>
-      {logo && <img className="game-detail-team-logo" src={logo} alt={`${teamLabel(team)} logo`} />}
     </div>
   )
 }

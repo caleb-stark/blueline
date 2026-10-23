@@ -1111,18 +1111,20 @@ a{
 }
 
 .game-detail-team{
-  display:grid;
-  grid-template-columns:auto minmax(0, 1fr);
-  align-items:stretch;
+  display:flex;
+  justify-content:center;
+  min-width:0;
+}
+
+.game-detail-team-identity{
+  display:flex;
+  align-items:flex-start;
+  min-width:0;
   gap:var(--space-4);
 }
 
-.game-detail-team-home{
-  grid-template-columns:minmax(0, 1fr) auto;
-}
-
-.game-detail-team-home .game-detail-team-logo{
-  order:2;
+.game-detail-team-home .game-detail-team-identity{
+  flex-direction:row-reverse;
 }
 
 .game-detail-team-copy{
@@ -1132,11 +1134,10 @@ a{
 }
 
 .game-detail-team-logo{
-  width:clamp(4rem, 9vw, 5.5rem);
-  height:auto;
-  min-height:0;
-  align-self:stretch;
+  width:clamp(6rem, 10vw, 8rem);
+  height:clamp(6rem, 10vw, 8rem);
   object-fit:contain;
+  flex:0 0 auto;
 }
 
 .game-detail-score span{
