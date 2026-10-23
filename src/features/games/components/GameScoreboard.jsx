@@ -28,7 +28,7 @@ function GameScoreboard({ landing }){
   const isScheduled = getGameState(landing) === "scheduled"
 
   return(
-    <section className="panel-card game-scoreboard" aria-labelledby="scoreboard-heading">
+    <section className={`panel-card game-scoreboard${isScheduled ? " game-scoreboard-scheduled" : ""}`} aria-labelledby="scoreboard-heading">
       <div className="section-heading"><h2 id="scoreboard-heading">Scoreboard</h2><span>{getGameStatusLabel(landing)}</span></div>
       <div className="game-detail-score">
         <TeamScore team={landing?.awayTeam} side="away" isScheduled={isScheduled} />

@@ -39,7 +39,7 @@ describe("game detail components", () => {
       />
     )
 
-    expect(screen.getByText("Scheduled")).toBeInTheDocument()
+    expect(screen.getByText("Scheduled").closest("section")).toHaveClass("game-scoreboard-scheduled")
     expect(screen.getByText("NYR")).toBeInTheDocument()
     expect(screen.getByText("TOR")).toBeInTheDocument()
     expect(screen.getByText("at")).toBeInTheDocument()

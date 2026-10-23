@@ -1141,6 +1141,11 @@ a{
   font-weight:900;
 }
 
+.game-scoreboard-scheduled .game-detail-score span{
+  font-size:clamp(2.5rem, 7vw, 4.5rem);
+  line-height:1;
+}
+
 .game-detail-score strong{
   color:var(--purple-bright);
   font-size:clamp(2.5rem, 8vw, 4.5rem);
