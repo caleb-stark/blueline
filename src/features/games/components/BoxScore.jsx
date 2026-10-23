@@ -4,20 +4,30 @@ function playerLabel(player){
   return player?.name?.default || "Unknown player"
 }
 
-const playerGroups = [
-  ["forwards", "Forwards"],
-  ["defense", "Defense"],
-  ["goalies", "Goalies"]
-]
-
 function playersForTeam(teamStats){
   if(Array.isArray(teamStats)){
-    return [{ label:null, players:teamStats }]
+    return [{ label:"Skaters", players:teamStats.filter(player => player?.points > 0) }]
   }
 
-  return playerGroups
-    .map(([key, label]) => ({ label, players:Array.isArray(teamStats?.[key]) ? teamStats[key] : [] }))
+  const skaters = [...(teamStats?.forwards || []), ...(teamStats?.defense || [])]
+    .filter(player => player?.points > 0)
+  const goalies = Array.isArray(teamStats?.goalies)
+    ? teamStats.goalies.filter(player => typeof player?.saves === "number")
+    : []
+
+  return [
+    { label:"Skaters", players:skaters },
+    { label:"Goalies", players:goalies }
+  ]
     .filter(group => group.players.length > 0)
+}
+
+function playerStats(player, groupLabel){
+  if(groupLabel === "Goalies"){
+    return `${player.saves} SV`
+  }
+
+  return `${player?.goals ?? 0} G · ${player?.assists ?? 0} A · ${player?.points ?? 0} P`
 }
 
 function BoxScore({ boxScore }){
@@ -42,7 +52,7 @@ function BoxScore({ boxScore }){
                 {group.players.map((player, index) => (
                   <div className="box-score-row" key={player?.playerId || `${key}-${group.label || "players"}-${index}`}>
                     {player?.playerId ? <Link to={`/players/${player.playerId}`}>{playerLabel(player)}</Link> : <span>{playerLabel(player)}</span>}
-                    <span>{player?.goals ?? 0} G · {player?.assists ?? 0} A · {player?.points ?? 0} P</span>
+                    <span>{playerStats(player, group.label)}</span>
                   </div>
                 ))}
               </div>

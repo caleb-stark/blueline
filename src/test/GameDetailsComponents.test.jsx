@@ -19,6 +19,7 @@ describe("game detail components", () => {
     render(<GameScoreboard landing={{ ...landing, awayTeam:{ ...landing.awayTeam, logo:"fla.svg" }, homeTeam:{ ...landing.homeTeam, logo:"buf.svg" } }} />)
     expect(screen.getByText("FLA")).toBeInTheDocument()
     expect(screen.getByText("BUF")).toBeInTheDocument()
+    expect(screen.getByText("Final")).toBeInTheDocument()
     expect(screen.getByText("3")).toBeInTheDocument()
     expect(screen.getByText("5")).toBeInTheDocument()
     expect(screen.getByAltText("FLA logo")).toHaveAttribute("src", "fla.svg")
@@ -31,7 +32,7 @@ describe("game detail components", () => {
         <BoxScore
           boxScore={{
             playerByGameStats:{
-              awayTeam:{ forwards:[{ playerId:1, name:{ default:"Away Player" }, goals:1, assists:2, points:3 }], defense:[], goalies:[] },
+              awayTeam:{ forwards:[{ playerId:1, name:{ default:"Away Player" }, goals:1, assists:2, points:3 }, { playerId:3, name:{ default:"Away Scorer" }, goals:0, assists:0, points:0 }], defense:[], goalies:[{ playerId:4, name:{ default:"Away Goalie" }, saves:12 }] },
               homeTeam:{ forwards:[], defense:[{ playerId:2, name:{ default:"Home Player" }, goals:0, assists:1, points:1 }], goalies:[] }
             }
           }}
@@ -39,9 +40,11 @@ describe("game detail components", () => {
       </MemoryRouter>
     )
 
-    expect(screen.getByText("Forwards")).toBeInTheDocument()
-    expect(screen.getByText("Defense")).toBeInTheDocument()
+    expect(screen.getAllByText("Skaters")).toHaveLength(2)
+    expect(screen.getByText("Goalies")).toBeInTheDocument()
     expect(screen.getByRole("link", { name:"Away Player" })).toHaveAttribute("href", "/players/1")
+    expect(screen.getByText("12 SV")).toBeInTheDocument()
+    expect(screen.queryByText("Away Scorer")).not.toBeInTheDocument()
   })
 
   it("links scoring players by player id", () => {

@@ -1,4 +1,4 @@
-import { getTeamLogo } from "../../../utils/games"
+import { getGameStatusLabel, getTeamLogo } from "../../../utils/games"
 
 function teamLabel(team){
   return team?.abbrev || team?.commonName?.default || "—"
@@ -25,7 +25,7 @@ function TeamScore({ team, side }){
 function GameScoreboard({ landing }){
   return(
     <section className="panel-card game-scoreboard" aria-labelledby="scoreboard-heading">
-      <div className="section-heading"><h2 id="scoreboard-heading">Scoreboard</h2><span>{landing?.gameState || "Unknown"}</span></div>
+      <div className="section-heading"><h2 id="scoreboard-heading">Scoreboard</h2><span>{getGameStatusLabel(landing)}</span></div>
       <div className="game-detail-score">
         <TeamScore team={landing?.awayTeam} side="away" />
         <b>at</b>
