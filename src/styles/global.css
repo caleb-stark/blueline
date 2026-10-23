@@ -1129,7 +1129,7 @@ a{
 }
 
 .game-detail-team-logo{
-  width:clamp(6.5rem, 10vw, 8.5rem);
+  width:clamp(7rem, 10.5vw, 9rem);
   height:auto;
   object-fit:contain;
   flex:0 0 auto;
