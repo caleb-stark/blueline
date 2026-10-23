@@ -1113,7 +1113,7 @@ a{
 
 .game-detail-team-identity{
   display:flex;
-  align-items:flex-start;
+  align-items:stretch;
   min-width:0;
   gap:var(--space-4);
 }
@@ -1130,10 +1130,9 @@ a{
 
 .game-detail-team-logo{
   width:clamp(6.5rem, 10vw, 8.5rem);
-  height:clamp(6.5rem, 10vw, 8.5rem);
+  height:auto;
   object-fit:contain;
   flex:0 0 auto;
-  transform:translateY(-0.5rem);
 }
 
 .game-detail-score span{

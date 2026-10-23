@@ -12,7 +12,7 @@ function playersForTeam(teamStats){
   const skaters = [...(teamStats?.forwards || []), ...(teamStats?.defense || [])]
     .filter(player => player?.points > 0)
   const goalies = Array.isArray(teamStats?.goalies)
-    ? teamStats.goalies.filter(player => typeof player?.saves === "number")
+    ? teamStats.goalies.filter(player => typeof player?.saves === "number" && player.saves > 0)
     : []
 
   return [

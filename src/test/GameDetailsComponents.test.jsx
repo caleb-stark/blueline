@@ -32,7 +32,7 @@ describe("game detail components", () => {
         <BoxScore
           boxScore={{
             playerByGameStats:{
-              awayTeam:{ forwards:[{ playerId:1, name:{ default:"Away Player" }, goals:1, assists:2, points:3 }, { playerId:3, name:{ default:"Away Scorer" }, goals:0, assists:0, points:0 }], defense:[], goalies:[{ playerId:4, name:{ default:"Away Goalie" }, saves:12 }] },
+              awayTeam:{ forwards:[{ playerId:1, name:{ default:"Away Player" }, goals:1, assists:2, points:3 }, { playerId:3, name:{ default:"Away Scorer" }, goals:0, assists:0, points:0 }], defense:[], goalies:[{ playerId:4, name:{ default:"Away Goalie" }, saves:12 }, { playerId:5, name:{ default:"Unused Goalie" }, saves:0 }] },
               homeTeam:{ forwards:[], defense:[{ playerId:2, name:{ default:"Home Player" }, goals:0, assists:1, points:1 }], goalies:[] }
             }
           }}
@@ -45,6 +45,7 @@ describe("game detail components", () => {
     expect(screen.getByRole("link", { name:"Away Player" })).toHaveAttribute("href", "/players/1")
     expect(screen.getByText("12 SV")).toBeInTheDocument()
     expect(screen.queryByText("Away Scorer")).not.toBeInTheDocument()
+    expect(screen.queryByText("Unused Goalie")).not.toBeInTheDocument()
   })
 
   it("links scoring players by player id", () => {
