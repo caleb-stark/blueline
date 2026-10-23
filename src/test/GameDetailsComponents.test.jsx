@@ -1,10 +1,13 @@
-import { render, screen } from "@testing-library/react"
+import { cleanup, render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
-import { describe, expect, it } from "vitest"
+import { afterEach, describe, expect, it } from "vitest"
 import GameScoreboard from "../features/games/components/GameScoreboard"
+import BoxScore from "../features/games/components/BoxScore"
 import ScoringSummary from "../features/games/components/ScoringSummary"
 import PenaltySummary from "../features/games/components/PenaltySummary"
 import PlayByPlay from "../features/games/components/PlayByPlay"
+
+afterEach(() => cleanup())
 
 const landing = {
   gameState:"OFF",
@@ -15,11 +18,54 @@ const landing = {
 
 describe("game detail components", () => {
   it("renders the verified scoreboard fields", () => {
-    render(<GameScoreboard landing={landing} />)
+    render(<GameScoreboard landing={{ ...landing, awayTeam:{ ...landing.awayTeam, logo:"fla.svg" }, homeTeam:{ ...landing.homeTeam, logo:"buf.svg" } }} />)
     expect(screen.getByText("FLA")).toBeInTheDocument()
     expect(screen.getByText("BUF")).toBeInTheDocument()
+    expect(screen.getByText("Final")).toBeInTheDocument()
     expect(screen.getByText("3")).toBeInTheDocument()
     expect(screen.getByText("5")).toBeInTheDocument()
+    expect(screen.getByAltText("FLA logo")).toHaveAttribute("src", "fla.svg")
+    expect(screen.getByAltText("BUF logo")).toHaveAttribute("src", "buf.svg")
+  })
+
+  it("omits score placeholders for scheduled games", () => {
+    render(
+      <GameScoreboard
+        landing={{
+          gameState:"FUT",
+          awayTeam:{ abbrev:"NYR", logo:"nyr.svg" },
+          homeTeam:{ abbrev:"TOR", logo:"tor.svg" }
+        }}
+      />
+    )
+
+    expect(screen.getByText("Scheduled").closest("section")).toHaveClass("game-scoreboard-scheduled")
+    expect(screen.getByText("NYR")).toBeInTheDocument()
+    expect(screen.getByText("TOR")).toBeInTheDocument()
+    expect(screen.getByText("at")).toBeInTheDocument()
+    expect(screen.queryAllByText("—")).toHaveLength(0)
+  })
+
+  it("renders the NHL box-score player groups", () => {
+    render(
+      <MemoryRouter>
+        <BoxScore
+          boxScore={{
+            playerByGameStats:{
+              awayTeam:{ forwards:[{ playerId:1, name:{ default:"Away Player" }, goals:1, assists:2, points:3 }, { playerId:3, name:{ default:"Away Scorer" }, goals:0, assists:0, points:0 }], defense:[], goalies:[{ playerId:4, name:{ default:"Away Goalie" }, saves:12 }, { playerId:5, name:{ default:"Unused Goalie" }, saves:0 }] },
+              homeTeam:{ forwards:[], defense:[{ playerId:2, name:{ default:"Home Player" }, goals:0, assists:1, points:1 }], goalies:[] }
+            }
+          }}
+        />
+      </MemoryRouter>
+    )
+
+    expect(screen.getAllByText("Skaters")).toHaveLength(2)
+    expect(screen.getByText("Goalies")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name:"Away Player" })).toHaveAttribute("href", "/players/1")
+    expect(screen.getByText("12 SV")).toBeInTheDocument()
+    expect(screen.queryByText("Away Scorer")).not.toBeInTheDocument()
+    expect(screen.queryByText("Unused Goalie")).not.toBeInTheDocument()
   })
 
   it("links scoring players by player id", () => {
@@ -28,9 +74,10 @@ describe("game detail components", () => {
   })
 
   it("maps penalties and safely labels unknown play types", () => {
-    const playByPlay = { plays:[{ eventId:2, typeDescKey:"penalty", timeInPeriod:"15:15", details:{ duration:2, descKey:"holding" } }, { eventId:3, typeDescKey:"unknown-event", timeInPeriod:"01:00", details:{} }] }
+    const playByPlay = { plays:[{ eventId:2, typeDescKey:"penalty", timeInPeriod:"15:15", details:{ duration:2, descKey:"holding" } }, { eventId:3, typeDescKey:"shot-on-goal", timeInPeriod:"01:00", details:{ shotType:"wrist" } }] }
     render(<><PenaltySummary playByPlay={playByPlay} /><PlayByPlay playByPlay={playByPlay} /></>)
     expect(screen.getAllByText("holding")).toHaveLength(2)
-    expect(screen.getByText("unknown-event")).toBeInTheDocument()
+    expect(screen.getByText("Shot On Goal")).toBeInTheDocument()
+    expect(screen.getByText("Wrist shot")).toBeInTheDocument()
   })
 })
