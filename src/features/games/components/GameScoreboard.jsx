@@ -1,4 +1,4 @@
-import { getGameStatusLabel, getTeamLogo } from "../../../utils/games"
+import { getGameState, getGameStatusLabel, getTeamLogo } from "../../../utils/games"
 
 function teamLabel(team){
   return team?.abbrev || team?.commonName?.default || "—"
@@ -8,7 +8,7 @@ function score(team){
   return typeof team?.score === "number" ? team.score : "—"
 }
 
-function TeamScore({ team, side }){
+function TeamScore({ team, side, isScheduled }){
   const logo = getTeamLogo(team)
 
   return(
@@ -17,7 +17,7 @@ function TeamScore({ team, side }){
         {logo && <img className="game-detail-team-logo" src={logo} alt={`${teamLabel(team)} logo`} />}
         <div className="game-detail-team-copy">
           <span>{teamLabel(team)}</span>
-          <strong>{score(team)}</strong>
+          {!isScheduled && <strong>{score(team)}</strong>}
         </div>
       </div>
     </div>
@@ -25,13 +25,15 @@ function TeamScore({ team, side }){
 }
 
 function GameScoreboard({ landing }){
+  const isScheduled = getGameState(landing) === "scheduled"
+
   return(
     <section className="panel-card game-scoreboard" aria-labelledby="scoreboard-heading">
       <div className="section-heading"><h2 id="scoreboard-heading">Scoreboard</h2><span>{getGameStatusLabel(landing)}</span></div>
       <div className="game-detail-score">
-        <TeamScore team={landing?.awayTeam} side="away" />
+        <TeamScore team={landing?.awayTeam} side="away" isScheduled={isScheduled} />
         <b>at</b>
-        <TeamScore team={landing?.homeTeam} side="home" />
+        <TeamScore team={landing?.homeTeam} side="home" isScheduled={isScheduled} />
       </div>
     </section>
   )

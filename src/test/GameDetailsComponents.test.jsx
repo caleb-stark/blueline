@@ -1,11 +1,13 @@
-import { render, screen } from "@testing-library/react"
+import { cleanup, render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
-import { describe, expect, it } from "vitest"
+import { afterEach, describe, expect, it } from "vitest"
 import GameScoreboard from "../features/games/components/GameScoreboard"
 import BoxScore from "../features/games/components/BoxScore"
 import ScoringSummary from "../features/games/components/ScoringSummary"
 import PenaltySummary from "../features/games/components/PenaltySummary"
 import PlayByPlay from "../features/games/components/PlayByPlay"
+
+afterEach(() => cleanup())
 
 const landing = {
   gameState:"OFF",
@@ -24,6 +26,24 @@ describe("game detail components", () => {
     expect(screen.getByText("5")).toBeInTheDocument()
     expect(screen.getByAltText("FLA logo")).toHaveAttribute("src", "fla.svg")
     expect(screen.getByAltText("BUF logo")).toHaveAttribute("src", "buf.svg")
+  })
+
+  it("omits score placeholders for scheduled games", () => {
+    render(
+      <GameScoreboard
+        landing={{
+          gameState:"FUT",
+          awayTeam:{ abbrev:"NYR", logo:"nyr.svg" },
+          homeTeam:{ abbrev:"TOR", logo:"tor.svg" }
+        }}
+      />
+    )
+
+    expect(screen.getByText("Scheduled")).toBeInTheDocument()
+    expect(screen.getByText("NYR")).toBeInTheDocument()
+    expect(screen.getByText("TOR")).toBeInTheDocument()
+    expect(screen.getByText("at")).toBeInTheDocument()
+    expect(screen.queryAllByText("—")).toHaveLength(0)
   })
 
   it("renders the NHL box-score player groups", () => {
