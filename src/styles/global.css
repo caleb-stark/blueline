@@ -1110,14 +1110,38 @@ a{
   gap:var(--space-2);
 }
 
+.game-detail-team{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto;
+  align-items:stretch;
+  gap:var(--space-4);
+}
+
+.game-detail-team-home .game-detail-team-logo{
+  order:2;
+}
+
+.game-detail-team-copy{
+  display:grid;
+  justify-items:center;
+  gap:var(--space-2);
+}
+
+.game-detail-team-logo{
+  width:clamp(4rem, 9vw, 5.5rem);
+  height:100%;
+  min-height:5rem;
+  object-fit:contain;
+}
+
 .game-detail-score span{
-  color:var(--purple-bright);
+  color:var(--text);
   font-size:1.35rem;
   font-weight:900;
 }
 
 .game-detail-score strong{
-  color:var(--text-strong);
+  color:var(--purple-bright);
   font-size:clamp(2.5rem, 8vw, 4.5rem);
   line-height:1;
 }
@@ -1133,6 +1157,18 @@ a{
 .box-score-team h3{
   color:var(--purple-bright);
   margin-bottom:var(--space-2);
+}
+
+.box-score-group + .box-score-group{
+  margin-top:var(--space-4);
+}
+
+.box-score-group h4{
+  color:var(--muted-strong);
+  font-size:0.82rem;
+  letter-spacing:0.08em;
+  margin-bottom:var(--space-1);
+  text-transform:uppercase;
 }
 
 .box-score-list,
@@ -1166,6 +1202,12 @@ a{
 
 .event-list li > span:first-child{
   color:var(--muted);
+}
+
+.play-by-play-list{
+  max-height:28rem;
+  overflow-y:auto;
+  padding-right:var(--space-2);
 }
 
 .muted-text{

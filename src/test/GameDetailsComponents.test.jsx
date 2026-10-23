@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 import { describe, expect, it } from "vitest"
 import GameScoreboard from "../features/games/components/GameScoreboard"
+import BoxScore from "../features/games/components/BoxScore"
 import ScoringSummary from "../features/games/components/ScoringSummary"
 import PenaltySummary from "../features/games/components/PenaltySummary"
 import PlayByPlay from "../features/games/components/PlayByPlay"
@@ -15,11 +16,32 @@ const landing = {
 
 describe("game detail components", () => {
   it("renders the verified scoreboard fields", () => {
-    render(<GameScoreboard landing={landing} />)
+    render(<GameScoreboard landing={{ ...landing, awayTeam:{ ...landing.awayTeam, logo:"fla.svg" }, homeTeam:{ ...landing.homeTeam, logo:"buf.svg" } }} />)
     expect(screen.getByText("FLA")).toBeInTheDocument()
     expect(screen.getByText("BUF")).toBeInTheDocument()
     expect(screen.getByText("3")).toBeInTheDocument()
     expect(screen.getByText("5")).toBeInTheDocument()
+    expect(screen.getByAltText("FLA logo")).toHaveAttribute("src", "fla.svg")
+    expect(screen.getByAltText("BUF logo")).toHaveAttribute("src", "buf.svg")
+  })
+
+  it("renders the NHL box-score player groups", () => {
+    render(
+      <MemoryRouter>
+        <BoxScore
+          boxScore={{
+            playerByGameStats:{
+              awayTeam:{ forwards:[{ playerId:1, name:{ default:"Away Player" }, goals:1, assists:2, points:3 }], defense:[], goalies:[] },
+              homeTeam:{ forwards:[], defense:[{ playerId:2, name:{ default:"Home Player" }, goals:0, assists:1, points:1 }], goalies:[] }
+            }
+          }}
+        />
+      </MemoryRouter>
+    )
+
+    expect(screen.getByText("Forwards")).toBeInTheDocument()
+    expect(screen.getByText("Defense")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name:"Away Player" })).toHaveAttribute("href", "/players/1")
   })
 
   it("links scoring players by player id", () => {
@@ -28,9 +50,10 @@ describe("game detail components", () => {
   })
 
   it("maps penalties and safely labels unknown play types", () => {
-    const playByPlay = { plays:[{ eventId:2, typeDescKey:"penalty", timeInPeriod:"15:15", details:{ duration:2, descKey:"holding" } }, { eventId:3, typeDescKey:"unknown-event", timeInPeriod:"01:00", details:{} }] }
+    const playByPlay = { plays:[{ eventId:2, typeDescKey:"penalty", timeInPeriod:"15:15", details:{ duration:2, descKey:"holding" } }, { eventId:3, typeDescKey:"shot-on-goal", timeInPeriod:"01:00", details:{ shotType:"wrist" } }] }
     render(<><PenaltySummary playByPlay={playByPlay} /><PlayByPlay playByPlay={playByPlay} /></>)
     expect(screen.getAllByText("holding")).toHaveLength(2)
-    expect(screen.getByText("unknown-event")).toBeInTheDocument()
+    expect(screen.getByText("Shot On Goal")).toBeInTheDocument()
+    expect(screen.getByText("Wrist shot")).toBeInTheDocument()
   })
 })
