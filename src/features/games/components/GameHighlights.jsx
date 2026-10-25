@@ -11,6 +11,16 @@ function periodLabel(goal){
   return `P${goal?.period || "—"}`
 }
 
+function nhlEmbedUrl(goal){
+  const clipId = goal?.highlightClip
+
+  if((typeof clipId !== "number" && typeof clipId !== "string") || String(clipId).trim() === ""){
+    return ""
+  }
+
+  return `https://players.brightcove.net/6415718365001/D3UCGynRWU_default/index.html?videoId=${encodeURIComponent(clipId)}`
+}
+
 function goalThumbnail(goal, landing, boxScore){
   const directHeadshot = goal?.headshot || goal?.player?.headshot || goal?.scorer?.headshot
 
@@ -53,6 +63,7 @@ function getPlaylistItems(landing, boxScore, recap){
     title:goalLabel(goal),
     subtitle:`${goal?.teamAbbrev?.default || "Goal"} · ${periodLabel(goal)} · ${goal?.timeInPeriod || "Time unavailable"}`,
     url:goal.highlightClipSharingUrl,
+    embedUrl:nhlEmbedUrl(goal),
     thumbnailUrl:goalThumbnail(goal, landing, boxScore)
   }))
 
@@ -60,8 +71,12 @@ function getPlaylistItems(landing, boxScore, recap){
 }
 
 function VideoPlayer({ item }){
-  if(item.kind === "youtube"){
-    return <iframe className="game-video-player" src={item.embedUrl} title={item.title} allow="encrypted-media; picture-in-picture" allowFullScreen />
+  if(item.embedUrl){
+    return(
+      <div className="game-video-frame">
+        <iframe className="game-video-player" src={item.embedUrl} title={item.title} allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen />
+      </div>
+    )
   }
 
   return(

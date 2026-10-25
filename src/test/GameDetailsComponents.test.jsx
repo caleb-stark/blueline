@@ -98,6 +98,14 @@ describe("game detail components", () => {
     expect(screen.getByRole("button", { name:/Second goal/ })).toHaveAttribute("aria-pressed", "true")
   })
 
+  it("uses the Brightcove player when a goal has an NHL clip id", () => {
+    render(<GameHighlights landing={{ ...landing, summary:{ scoring:[{ goals:[
+      { eventId:1, highlightClip:123456, name:{ default:"Goal" }, teamAbbrev:{ default:"BUF" }, highlightClipSharingUrl:"https://www.nhl.com/video/goal" }
+    ] }] } }} />)
+
+    expect(screen.getByTitle("Goal")).toHaveAttribute("src", "https://players.brightcove.net/6415718365001/D3UCGynRWU_default/index.html?videoId=123456")
+  })
+
   it("uses a highlight thumbnail when the NHL goal provides one", () => {
     render(<GameHighlights landing={{ ...landing, summary:{ scoring:[{ goals:[
       { eventId:1, name:{ default:"Goal" }, teamAbbrev:{ default:"BUF" }, highlightClipSharingUrl:"https://www.nhl.com/video/goal", highlightClip:{ thumbnailUrl:"goal.jpg" } }

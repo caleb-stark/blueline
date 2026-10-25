@@ -1235,7 +1235,7 @@ a{
 .game-video-stage{
   min-width:0;
   display:flex;
-  aspect-ratio:16 / 9;
+  aspect-ratio:16 / 10;
   align-items:center;
   padding-block:var(--space-2);
 }
@@ -1248,6 +1248,14 @@ a{
   border:0;
   border-radius:0.9rem;
   background:var(--surface-strong);
+}
+
+.game-video-frame{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  border-radius:0.9rem;
+  background:#000;
 }
 
 .game-video-fallback{
