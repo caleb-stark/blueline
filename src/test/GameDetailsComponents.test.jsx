@@ -111,7 +111,7 @@ describe("game detail components", () => {
       landing={{ ...landing, awayTeam:{ ...landing.awayTeam, logo:"buf.svg" }, summary:{ scoring:[{ goals:[
         { eventId:1, playerId:847, name:{ default:"Goal" }, teamAbbrev:{ default:"BUF" }, highlightClipSharingUrl:"https://www.nhl.com/video/goal" }
       ] }] } }}
-      boxScore={{ playerByGameStats:{ awayTeam:{ forwards:[{ playerId:847, headshot:"player.jpg" }] }, homeTeam:{} } }}
+      boxScore={{ playerByGameStats:{ awayTeam:{ forwards:[{ playerId:"847", headshot:"player.jpg" }] }, homeTeam:{} } }}
     />)
 
     expect(screen.getByRole("presentation")).toHaveAttribute("src", "player.jpg")

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import useGameRecap from "../hooks/useGameRecap"
 import { canShowGameMedia, getGoalHighlights } from "../utils/gameMedia"
 import { getTeamLogo } from "../../../utils/games"
@@ -12,20 +12,32 @@ function periodLabel(goal){
 }
 
 function goalThumbnail(goal, landing, boxScore){
-  const directThumbnail = goal?.highlightClip?.thumbnailUrl || goal?.highlightClip?.thumbnail || goal?.thumbnailUrl
+  const directHeadshot = goal?.headshot || goal?.player?.headshot || goal?.scorer?.headshot
 
-  if(typeof directThumbnail === "string" && directThumbnail){
-    return directThumbnail
+  if(typeof directHeadshot === "string" && directHeadshot){
+    return directHeadshot
   }
 
   const players = ["awayTeam", "homeTeam"].flatMap(teamKey => {
     const team = boxScore?.playerByGameStats?.[teamKey]
     return [...(team?.forwards || []), ...(team?.defense || []), ...(team?.goalies || [])]
   })
-  const player = players.find(candidate => candidate?.playerId === goal?.playerId)
+  const goalPlayerId = goal?.playerId == null ? "" : String(goal.playerId)
+  const goalPlayerName = goal?.playerName?.default || goal?.name?.default || ""
+  const player = players.find(candidate => {
+    const candidateId = candidate?.playerId == null ? "" : String(candidate.playerId)
+    const candidateName = candidate?.name?.default || ""
+    return (goalPlayerId && candidateId === goalPlayerId) || (goalPlayerName && candidateName === goalPlayerName)
+  })
 
   if(typeof player?.headshot === "string" && player.headshot){
     return player.headshot
+  }
+
+  const directThumbnail = goal?.highlightClip?.thumbnailUrl || goal?.highlightClip?.thumbnail || goal?.thumbnailUrl
+
+  if(typeof directThumbnail === "string" && directThumbnail){
+    return directThumbnail
   }
 
   const teamAbbrev = goal?.teamAbbrev?.default
@@ -66,8 +78,30 @@ function VideoPlayer({ item }){
 function GameHighlights({ landing, boxScore }){
   const { recap } = useGameRecap(landing)
   const [selectedId, setSelectedId] = useState(null)
+  const [videoHeight, setVideoHeight] = useState(null)
+  const stageRef = useRef(null)
   const playlistRef = useRef(null)
   const items = getPlaylistItems(landing, boxScore, recap)
+
+  useEffect(() => {
+    if(typeof ResizeObserver === "undefined" || !stageRef.current){
+      return undefined
+    }
+
+    const updateHeight = entries => {
+      const height = entries[0]?.contentRect?.height
+
+      if(typeof height === "number" && height > 0){
+        setVideoHeight(Math.round(height))
+      }
+    }
+
+    const observer = new ResizeObserver(updateHeight)
+    observer.observe(stageRef.current)
+    updateHeight([{ contentRect:stageRef.current.getBoundingClientRect() }])
+
+    return () => observer.disconnect()
+  }, [])
 
   if(!canShowGameMedia(landing) || items.length === 0){
     return null
@@ -88,10 +122,10 @@ function GameHighlights({ landing, boxScore }){
         <span>{activeIndex + 1} of {items.length}</span>
       </div>
       <div className="game-video-layout">
-        <div className="game-video-stage">
+        <div className="game-video-stage" ref={stageRef}>
           <VideoPlayer item={activeItem} />
         </div>
-        <div className="game-video-playlist-shell">
+        <div className="game-video-playlist-shell" style={{ "--game-video-height": videoHeight ? `${videoHeight}px` : "auto" }}>
           <div className="game-video-playlist" aria-label="Game video playlist" ref={playlistRef}>
             {items.map((item, index) => (
               <button
