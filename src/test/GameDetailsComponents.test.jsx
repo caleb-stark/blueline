@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react"
+import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 import { afterEach, describe, expect, it } from "vitest"
 import GameScoreboard from "../features/games/components/GameScoreboard"
@@ -6,6 +6,7 @@ import BoxScore from "../features/games/components/BoxScore"
 import ScoringSummary from "../features/games/components/ScoringSummary"
 import PenaltySummary from "../features/games/components/PenaltySummary"
 import PlayByPlay from "../features/games/components/PlayByPlay"
+import GameHighlights from "../features/games/components/GameHighlights"
 
 afterEach(() => cleanup())
 
@@ -13,7 +14,7 @@ const landing = {
   gameState:"OFF",
   awayTeam:{ abbrev:"FLA", score:3 },
   homeTeam:{ abbrev:"BUF", score:5 },
-  summary:{ scoring:[{ goals:[{ eventId:1, playerId:847, name:{ default:"J. Doan" }, teamAbbrev:{ default:"BUF" }, timeInPeriod:"05:58" }] }] }
+  summary:{ scoring:[{ goals:[{ eventId:1, playerId:847, name:{ default:"J. Doan" }, teamAbbrev:{ default:"BUF" }, timeInPeriod:"05:58", highlightClipSharingUrl:"https://www.nhl.com/video/example" }] }] }
 }
 
 describe("game detail components", () => {
@@ -46,6 +47,13 @@ describe("game detail components", () => {
     expect(screen.queryAllByText("—")).toHaveLength(0)
   })
 
+  it("uses the shared red live status treatment", () => {
+    render(<GameScoreboard landing={{ gameState:"LIVE", awayTeam:{ abbrev:"NYR", score:2 }, homeTeam:{ abbrev:"TOR", score:1 } }} />)
+
+    expect(screen.getByText("Live")).toHaveClass("game-scoreboard-status-live")
+    expect(screen.getByText("Live").closest("section")).toHaveClass("game-scoreboard-live")
+  })
+
   it("renders the NHL box-score player groups", () => {
     render(
       <MemoryRouter>
@@ -71,6 +79,60 @@ describe("game detail components", () => {
   it("links scoring players by player id", () => {
     render(<MemoryRouter><ScoringSummary landing={landing} /></MemoryRouter>)
     expect(screen.getByRole("link", { name:"J. Doan" })).toHaveAttribute("href", "/players/847")
+  })
+
+  it("shows one goal highlight at a time and only available navigation", () => {
+    render(<GameHighlights landing={{ ...landing, summary:{ scoring:[{ goals:[
+      { eventId:1, name:{ default:"First goal" }, teamAbbrev:{ default:"BUF" }, highlightClipSharingUrl:"https://www.nhl.com/video/first" },
+      { eventId:2, name:{ default:"Second goal" }, teamAbbrev:{ default:"FLA" }, highlightClipSharingUrl:"https://www.nhl.com/video/second" }
+    ] }] } }} />)
+
+    expect(screen.getByRole("heading", { name:"Game Highlights" })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name:/First goal/ })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("button", { name:/Second goal/ })).toHaveAttribute("aria-pressed", "false")
+    expect(screen.getByRole("button", { name:"Scroll goals down" })).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole("button", { name:/Second goal/ }))
+
+    expect(screen.getByRole("button", { name:/First goal/ })).toHaveAttribute("aria-pressed", "false")
+    expect(screen.getByRole("button", { name:/Second goal/ })).toHaveAttribute("aria-pressed", "true")
+  })
+
+  it("uses the Brightcove player when a goal has an NHL clip id", () => {
+    render(<GameHighlights landing={{ ...landing, summary:{ scoring:[{ goals:[
+      { eventId:1, highlightClip:123456, name:{ default:"Goal" }, teamAbbrev:{ default:"BUF" }, highlightClipSharingUrl:"https://www.nhl.com/video/goal" }
+    ] }] } }} />)
+
+    expect(screen.getByTitle("Goal")).toHaveAttribute("src", "https://players.brightcove.net/6415718365001/D3UCGynRWU_default/index.html?videoId=123456")
+  })
+
+  it("uses a highlight thumbnail when the NHL goal provides one", () => {
+    render(<GameHighlights landing={{ ...landing, summary:{ scoring:[{ goals:[
+      { eventId:1, name:{ default:"Goal" }, teamAbbrev:{ default:"BUF" }, highlightClipSharingUrl:"https://www.nhl.com/video/goal", highlightClip:{ thumbnailUrl:"goal.jpg" } }
+    ] }] } }} />)
+
+    expect(screen.getByRole("presentation")).toHaveAttribute("src", "goal.jpg")
+  })
+
+  it("uses the scorer headshot when a highlight has no thumbnail", () => {
+    render(<GameHighlights
+      landing={{ ...landing, awayTeam:{ ...landing.awayTeam, logo:"buf.svg" }, summary:{ scoring:[{ goals:[
+        { eventId:1, playerId:847, name:{ default:"Goal" }, teamAbbrev:{ default:"BUF" }, highlightClipSharingUrl:"https://www.nhl.com/video/goal" }
+      ] }] } }}
+      boxScore={{ playerByGameStats:{ awayTeam:{ forwards:[{ playerId:"847", headshot:"player.jpg" }] }, homeTeam:{} } }}
+    />)
+
+    expect(screen.getByRole("presentation")).toHaveAttribute("src", "player.jpg")
+  })
+
+  it("does not render media sections for scheduled or scoreless games", () => {
+    const scheduled = { ...landing, gameState:"FUT" }
+    const scoreless = { ...landing, summary:{ scoring:[] } }
+
+    render(<><GameHighlights landing={scheduled} /><ScoringSummary landing={scoreless} /></>)
+
+    expect(screen.queryByRole("heading", { name:"Highlights" })).not.toBeInTheDocument()
+    expect(screen.queryByRole("heading", { name:"Scoring summary" })).not.toBeInTheDocument()
   })
 
   it("maps penalties and safely labels unknown play types", () => {

@@ -97,3 +97,7 @@ Check that `vite.config.js` has this proxy key:
 ```
 
 Then restart the dev server.
+
+## YouTube Recaps
+
+Final-game recap lookup uses the official NHL YouTube channel through the same-origin `/youtube-api` proxy. Copy `.env.example` to `.env` and set `YOUTUBE_API_KEY` for recap search. The key is read by Vite’s server-side proxy and is never exposed as a `VITE_` frontend variable.
