@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import useGameRecap from "../hooks/useGameRecap"
 import { canShowGameMedia, getGoalHighlights } from "../utils/gameMedia"
+import { getTeamLogo } from "../../../utils/games"
 
 function goalLabel(goal){
   return goal?.playerName?.default || goal?.name?.default || "Scoring highlight"
@@ -10,6 +11,19 @@ function periodLabel(goal){
   return `P${goal?.period || "—"}`
 }
 
+function goalThumbnail(goal, landing){
+  const directThumbnail = goal?.highlightClip?.thumbnailUrl || goal?.highlightClip?.thumbnail || goal?.thumbnailUrl
+
+  if(typeof directThumbnail === "string" && directThumbnail){
+    return directThumbnail
+  }
+
+  const teamAbbrev = goal?.teamAbbrev?.default
+  const team = [landing?.awayTeam, landing?.homeTeam].find(candidate => candidate?.abbrev === teamAbbrev)
+
+  return getTeamLogo(team)
+}
+
 function getPlaylistItems(landing, recap){
   const highlights = getGoalHighlights(landing).map((goal, index) => ({
     id:`nhl-${goal?.eventId || index}`,
@@ -17,7 +31,7 @@ function getPlaylistItems(landing, recap){
     title:goalLabel(goal),
     subtitle:`${goal?.teamAbbrev?.default || "Goal"} · ${periodLabel(goal)} · ${goal?.timeInPeriod || "Time unavailable"}`,
     url:goal.highlightClipSharingUrl,
-    thumbnailUrl:goal?.highlightClip?.thumbnailUrl || null
+    thumbnailUrl:goalThumbnail(goal, landing)
   }))
 
   return recap ? [{ id:recap.id, kind:"youtube", title:"Full Game Recap", subtitle:recap.title, ...recap }, ...highlights] : highlights
@@ -40,8 +54,9 @@ function VideoPlayer({ item }){
 }
 
 function GameHighlights({ landing }){
-  const { recap, loading:recapLoading, error:recapError } = useGameRecap(landing)
+  const { recap } = useGameRecap(landing)
   const [selectedId, setSelectedId] = useState(null)
+  const playlistRef = useRef(null)
   const items = getPlaylistItems(landing, recap)
 
   if(!canShowGameMedia(landing) || items.length === 0){
@@ -50,6 +65,11 @@ function GameHighlights({ landing }){
 
   const activeIndex = Math.max(0, items.findIndex(item => item.id === selectedId))
   const activeItem = items[activeIndex]
+  const movePlaylist = direction => {
+    if(playlistRef.current){
+      playlistRef.current.scrollTop += direction * playlistRef.current.clientHeight
+    }
+  }
 
   return(
     <section className="panel-card game-highlights-panel" aria-labelledby="highlights-heading">
@@ -61,23 +81,27 @@ function GameHighlights({ landing }){
         <div className="game-video-stage">
           <VideoPlayer item={activeItem} />
         </div>
-        <div className="game-video-playlist" aria-label="Game video playlist">
-          {items.map((item, index) => (
-            <button
-              className={`game-video-playlist-item${index === activeIndex ? " is-selected" : ""}`}
-              type="button"
-              key={item.id}
-              aria-pressed={index === activeIndex}
-              onClick={() => setSelectedId(item.id)}
-            >
-              {item.thumbnailUrl ? <img src={item.thumbnailUrl} alt="" /> : <span className="game-video-thumbnail-fallback">{item.kind === "youtube" ? "RECAP" : "NHL"}</span>}
-              <span><strong>{item.title}</strong><small>{item.subtitle}</small></span>
-            </button>
-          ))}
+        <div className="game-video-playlist-shell">
+          <div className="game-video-playlist" aria-label="Game video playlist" ref={playlistRef}>
+            {items.map((item, index) => (
+              <button
+                className={`game-video-playlist-item${index === activeIndex ? " is-selected" : ""}`}
+                type="button"
+                key={item.id}
+                aria-pressed={index === activeIndex}
+                onClick={() => setSelectedId(item.id)}
+              >
+                {item.thumbnailUrl ? <img src={item.thumbnailUrl} alt="" /> : <span className="game-video-thumbnail-fallback">{item.kind === "youtube" ? "RECAP" : "NHL"}</span>}
+                <span><strong>{item.title}</strong><small>{item.subtitle}</small></span>
+              </button>
+            ))}
+          </div>
+          {items.length > 1 && <div className="game-video-playlist-controls" aria-label="Playlist navigation">
+            <button className="date-nav-button" type="button" aria-label="Scroll goals up" onClick={() => movePlaylist(-1)}>↑</button>
+            <button className="date-nav-button" type="button" aria-label="Scroll goals down" onClick={() => movePlaylist(1)}>↓</button>
+          </div>}
         </div>
       </div>
-      {recapLoading && <p className="muted-text game-media-status">Looking for the official full-game recap…</p>}
-      {recapError && <p className="muted-text game-media-status">Full-game recap unavailable. Goal highlights are still available.</p>}
     </section>
   )
 }

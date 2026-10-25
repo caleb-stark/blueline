@@ -90,11 +90,20 @@ describe("game detail components", () => {
     expect(screen.getByRole("heading", { name:"Game Highlights" })).toBeInTheDocument()
     expect(screen.getByRole("button", { name:/First goal/ })).toHaveAttribute("aria-pressed", "true")
     expect(screen.getByRole("button", { name:/Second goal/ })).toHaveAttribute("aria-pressed", "false")
+    expect(screen.getByRole("button", { name:"Scroll goals down" })).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole("button", { name:/Second goal/ }))
 
     expect(screen.getByRole("button", { name:/First goal/ })).toHaveAttribute("aria-pressed", "false")
     expect(screen.getByRole("button", { name:/Second goal/ })).toHaveAttribute("aria-pressed", "true")
+  })
+
+  it("uses a highlight thumbnail when the NHL goal provides one", () => {
+    render(<GameHighlights landing={{ ...landing, summary:{ scoring:[{ goals:[
+      { eventId:1, name:{ default:"Goal" }, teamAbbrev:{ default:"BUF" }, highlightClipSharingUrl:"https://www.nhl.com/video/goal", highlightClip:{ thumbnailUrl:"goal.jpg" } }
+    ] }] } }} />)
+
+    expect(screen.getByRole("presentation")).toHaveAttribute("src", "goal.jpg")
   })
 
   it("does not render media sections for scheduled or scoreless games", () => {

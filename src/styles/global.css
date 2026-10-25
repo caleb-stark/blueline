@@ -1233,6 +1233,7 @@ a{
 .game-video-stage{
   flex:1 1 auto;
   min-width:0;
+  padding-block:var(--space-2);
 }
 
 .game-video-player{
@@ -1263,19 +1264,29 @@ a{
   font-size:1.25rem;
 }
 
-.game-video-note,
-.game-media-status{
-  margin-top:var(--space-2);
+.game-video-playlist-shell{
+  flex:0 0 min(18rem, 34%);
+  display:flex;
+  min-height:0;
+  padding-block:var(--space-2);
+  flex-direction:column;
+  gap:var(--space-2);
 }
 
 .game-video-playlist{
   display:grid;
-  flex:0 0 min(18rem, 34%);
   align-content:start;
   grid-auto-rows:5.5rem;
+  min-height:0;
+  flex:1 1 auto;
   gap:var(--space-2);
-  height:100%;
+  padding-right:0.15rem;
   overflow-y:auto;
+  scrollbar-width:none;
+}
+
+.game-video-playlist::-webkit-scrollbar{
+  display:none;
 }
 
 .game-video-playlist-item{
@@ -1298,6 +1309,12 @@ a{
 
 .game-video-playlist-item.is-selected{
   border-color:var(--purple-bright);
+}
+
+.game-video-playlist-controls{
+  display:flex;
+  justify-content:flex-end;
+  gap:var(--space-2);
 }
 
 .game-video-playlist-item:focus-visible{
@@ -1529,9 +1546,9 @@ a{
     flex-direction:column;
   }
 
-  .game-video-playlist{
+  .game-video-playlist-shell{
     flex-basis:auto;
-    height:auto;
+    padding-block:0;
   }
 
   .team-stat-grid,
