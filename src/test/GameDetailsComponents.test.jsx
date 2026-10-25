@@ -7,7 +7,6 @@ import ScoringSummary from "../features/games/components/ScoringSummary"
 import PenaltySummary from "../features/games/components/PenaltySummary"
 import PlayByPlay from "../features/games/components/PlayByPlay"
 import GameHighlights from "../features/games/components/GameHighlights"
-import GameRecap from "../features/games/components/GameRecap"
 
 afterEach(() => cleanup())
 
@@ -48,6 +47,13 @@ describe("game detail components", () => {
     expect(screen.queryAllByText("—")).toHaveLength(0)
   })
 
+  it("uses the shared red live status treatment", () => {
+    render(<GameScoreboard landing={{ gameState:"LIVE", awayTeam:{ abbrev:"NYR", score:2 }, homeTeam:{ abbrev:"TOR", score:1 } }} />)
+
+    expect(screen.getByText("Live")).toHaveClass("game-scoreboard-status-live")
+    expect(screen.getByText("Live").closest("section")).toHaveClass("game-scoreboard-live")
+  })
+
   it("renders the NHL box-score player groups", () => {
     render(
       <MemoryRouter>
@@ -81,15 +87,14 @@ describe("game detail components", () => {
       { eventId:2, name:{ default:"Second goal" }, teamAbbrev:{ default:"FLA" }, highlightClipSharingUrl:"https://www.nhl.com/video/second" }
     ] }] } }} />)
 
-    expect(screen.getByText("First goal")).toBeInTheDocument()
-    expect(screen.getByRole("button", { name:"Next highlight" })).toBeInTheDocument()
-    expect(screen.queryByRole("button", { name:"Previous highlight" })).not.toBeInTheDocument()
+    expect(screen.getByRole("heading", { name:"Game Highlights" })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name:/First goal/ })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("button", { name:/Second goal/ })).toHaveAttribute("aria-pressed", "false")
 
-    fireEvent.click(screen.getByRole("button", { name:"Next highlight" }))
+    fireEvent.click(screen.getByRole("button", { name:/Second goal/ }))
 
-    expect(screen.getByText("Second goal")).toBeInTheDocument()
-    expect(screen.getByRole("button", { name:"Previous highlight" })).toBeInTheDocument()
-    expect(screen.queryByRole("button", { name:"Next highlight" })).not.toBeInTheDocument()
+    expect(screen.getByRole("button", { name:/First goal/ })).toHaveAttribute("aria-pressed", "false")
+    expect(screen.getByRole("button", { name:/Second goal/ })).toHaveAttribute("aria-pressed", "true")
   })
 
   it("does not render media sections for scheduled or scoreless games", () => {
@@ -100,12 +105,6 @@ describe("game detail components", () => {
 
     expect(screen.queryByRole("heading", { name:"Highlights" })).not.toBeInTheDocument()
     expect(screen.queryByRole("heading", { name:"Scoring summary" })).not.toBeInTheDocument()
-  })
-
-  it("links final games to an official recap search", () => {
-    render(<GameRecap landing={{ ...landing, gameDate:"2026-10-21", awayTeam:{ name:{ default:"Boston Bruins" } }, homeTeam:{ name:{ default:"New York Rangers" } } }} />)
-    expect(screen.getByRole("heading", { name:"Game recap" })).toBeInTheDocument()
-    expect(screen.getByRole("link", { name:"Find recap" })).toHaveAttribute("href", expect.stringContaining("youtube.com/@NHL/search"))
   })
 
   it("maps penalties and safely labels unknown play types", () => {

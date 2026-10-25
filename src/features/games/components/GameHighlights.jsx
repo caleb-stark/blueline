@@ -1,43 +1,85 @@
 import { useState } from "react"
-import { canShowGameMedia, getGoalHighlights } from "../utils/gameMedia"
+import useGameRecap from "../hooks/useGameRecap"
+import { canShowGameMedia, getGoalHighlights, getRecapSearchUrl } from "../utils/gameMedia"
 
 function goalLabel(goal){
   return goal?.playerName?.default || goal?.name?.default || "Scoring highlight"
 }
 
-function GameHighlights({ landing }){
-  const highlights = getGoalHighlights(landing)
-  const [selectedIndex, setSelectedIndex] = useState(0)
+function periodLabel(goal){
+  return `P${goal?.period || "—"}`
+}
 
-  if(!canShowGameMedia(landing) || highlights.length === 0){
+function getPlaylistItems(landing, recap){
+  const highlights = getGoalHighlights(landing).map((goal, index) => ({
+    id:`nhl-${goal?.eventId || index}`,
+    kind:"nhl",
+    title:goalLabel(goal),
+    subtitle:`${goal?.teamAbbrev?.default || "Goal"} · ${periodLabel(goal)} · ${goal?.timeInPeriod || "Time unavailable"}`,
+    url:goal.highlightClipSharingUrl,
+    thumbnailUrl:goal?.highlightClip?.thumbnailUrl || null
+  }))
+
+  return recap ? [{ id:recap.id, kind:"youtube", title:"Full Game Recap", subtitle:recap.title, ...recap }, ...highlights] : highlights
+}
+
+function VideoPlayer({ item }){
+  if(item.kind === "youtube"){
+    return <iframe className="game-video-player" src={item.embedUrl} title={item.title} allow="encrypted-media; picture-in-picture" allowFullScreen />
+  }
+
+  return(
+    <div className="game-video-player game-video-fallback">
+      <div>
+        <span className="eyebrow">NHL highlight</span>
+        <strong>{item.title}</strong>
+        <a className="game-media-link" href={item.url} target="_blank" rel="noreferrer">Watch on NHL.com</a>
+      </div>
+    </div>
+  )
+}
+
+function GameHighlights({ landing }){
+  const { recap, loading:recapLoading, error:recapError } = useGameRecap(landing)
+  const [selectedId, setSelectedId] = useState(null)
+  const items = getPlaylistItems(landing, recap)
+
+  if(!canShowGameMedia(landing) || items.length === 0){
     return null
   }
 
-  const activeIndex = Math.min(selectedIndex, highlights.length - 1)
-  const highlight = highlights[activeIndex]
+  const activeIndex = Math.max(0, items.findIndex(item => item.id === selectedId))
+  const activeItem = items[activeIndex]
 
   return(
     <section className="panel-card game-highlights-panel" aria-labelledby="highlights-heading">
       <div className="section-heading">
-        <h2 id="highlights-heading">Highlights</h2>
-        <span>{activeIndex + 1} of {highlights.length}</span>
+        <h2 id="highlights-heading">Game Highlights</h2>
+        <span>{activeIndex + 1} of {items.length}</span>
       </div>
-      <div className="game-highlight-card">
-        <div>
-          <p className="eyebrow">{highlight?.teamAbbrev?.default || "Goal"} · {highlight?.timeInPeriod || ""}</p>
-          <h3>{goalLabel(highlight)}</h3>
-          <p className="muted-text">Watch the official NHL goal highlight.</p>
+      <div className="game-video-layout">
+        <div className="game-video-stage">
+          <VideoPlayer item={activeItem} />
+          {activeItem.kind === "nhl" && <p className="muted-text game-video-note">This highlight opens on NHL.com because embedding is not available for this video.</p>}
         </div>
-        <a className="game-media-link" href={highlight.highlightClipSharingUrl} target="_blank" rel="noreferrer">
-          Watch highlight
-        </a>
+        <div className="game-video-playlist" aria-label="Game video playlist">
+          {items.map((item, index) => (
+            <button
+              className={`game-video-playlist-item${index === activeIndex ? " is-selected" : ""}`}
+              type="button"
+              key={item.id}
+              aria-pressed={index === activeIndex}
+              onClick={() => setSelectedId(item.id)}
+            >
+              {item.thumbnailUrl ? <img src={item.thumbnailUrl} alt="" /> : <span className="game-video-thumbnail-fallback">{item.kind === "youtube" ? "RECAP" : "NHL"}</span>}
+              <span><strong>{item.title}</strong><small>{item.subtitle}</small></span>
+            </button>
+          ))}
+        </div>
       </div>
-      {(activeIndex > 0 || activeIndex < highlights.length - 1) && (
-        <div className="game-media-controls" aria-label="Highlight navigation">
-          {activeIndex > 0 && <button className="date-nav-button" type="button" aria-label="Previous highlight" onClick={() => setSelectedIndex(index => index - 1)}>←</button>}
-          {activeIndex < highlights.length - 1 && <button className="date-nav-button" type="button" aria-label="Next highlight" onClick={() => setSelectedIndex(index => index + 1)}>→</button>}
-        </div>
-      )}
+      {recapLoading && <p className="muted-text game-media-status">Looking for the official full-game recap…</p>}
+      {recapError && <p className="muted-text game-media-status">Full-game recap unavailable. Goal highlights are still available.</p>}
+      {!recap && <a className="game-media-fallback-link" href={getRecapSearchUrl(landing)} target="_blank" rel="noreferrer">Search the official NHL channel for the full recap</a>}
     </section>
   )
 }

@@ -26,10 +26,11 @@ function TeamScore({ team, side, isScheduled }){
 
 function GameScoreboard({ landing }){
   const isScheduled = getGameState(landing) === "scheduled"
+  const isLive = getGameState(landing) === "live"
 
   return(
-    <section className={`panel-card game-scoreboard${isScheduled ? " game-scoreboard-scheduled" : ""}`} aria-labelledby="scoreboard-heading">
-      <div className="section-heading"><h2 id="scoreboard-heading">Scoreboard</h2><span>{getGameStatusLabel(landing)}</span></div>
+    <section className={`panel-card game-scoreboard${isScheduled ? " game-scoreboard-scheduled" : ""}${isLive ? " game-scoreboard-live" : ""}`} aria-labelledby="scoreboard-heading">
+      <div className="section-heading"><h2 id="scoreboard-heading">Scoreboard</h2><span className={isLive ? "game-scoreboard-status-live" : ""}>{getGameStatusLabel(landing)}</span></div>
       <div className="game-detail-score">
         <TeamScore team={landing?.awayTeam} side="away" isScheduled={isScheduled} />
         <b>at</b>
