@@ -1220,6 +1220,40 @@ a{
   padding-right:var(--space-2);
 }
 
+.game-recap-content,
+.game-highlight-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--space-5);
+}
+
+.game-recap-content h3,
+.game-highlight-card h3{
+  margin:0 0 var(--space-2);
+}
+
+.game-media-link{
+  display:inline-flex;
+  flex:0 0 auto;
+  align-items:center;
+  justify-content:center;
+  min-height:2.75rem;
+  padding:0.65rem 1rem;
+  border:1px solid var(--border);
+  border-radius:0.8rem;
+  color:var(--text);
+  font-weight:800;
+  text-decoration:none;
+}
+
+.game-media-controls{
+  display:flex;
+  justify-content:flex-end;
+  gap:var(--space-2);
+  margin-top:var(--space-4);
+}
+
 .muted-text{
   color:var(--muted);
 }
@@ -1381,6 +1415,16 @@ a{
   .event-list li > span:last-child,
   .event-list li > a:last-child{
     grid-column:2;
+  }
+
+  .game-recap-content,
+  .game-highlight-card{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .game-media-link{
+    align-self:flex-start;
   }
 
   .team-stat-grid,

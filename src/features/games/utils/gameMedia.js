@@ -1,0 +1,24 @@
+import { getGameState, getTeamName } from "../../../utils/games"
+
+export function getScoringGoals(landing){
+  return Array.isArray(landing?.summary?.scoring)
+    ? landing.summary.scoring.flatMap(period => Array.isArray(period?.goals) ? period.goals : [])
+    : []
+}
+
+export function getGoalHighlights(landing){
+  return getScoringGoals(landing).filter(goal => typeof goal?.highlightClipSharingUrl === "string" && goal.highlightClipSharingUrl)
+}
+
+export function getRecapSearchUrl(landing){
+  const away = getTeamName(landing?.awayTeam) || "Away team"
+  const home = getTeamName(landing?.homeTeam) || "Home team"
+  const date = landing?.gameDate || ""
+  const query = `${away} vs ${home} NHL Highlights ${date}`.trim()
+
+  return `https://www.youtube.com/@NHL/search?query=${encodeURIComponent(query)}`
+}
+
+export function canShowGameMedia(landing){
+  return getGameState(landing) !== "scheduled" && getScoringGoals(landing).length > 0
+}

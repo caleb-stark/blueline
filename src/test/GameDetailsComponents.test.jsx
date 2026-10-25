@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react"
+import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 import { afterEach, describe, expect, it } from "vitest"
 import GameScoreboard from "../features/games/components/GameScoreboard"
@@ -6,6 +6,8 @@ import BoxScore from "../features/games/components/BoxScore"
 import ScoringSummary from "../features/games/components/ScoringSummary"
 import PenaltySummary from "../features/games/components/PenaltySummary"
 import PlayByPlay from "../features/games/components/PlayByPlay"
+import GameHighlights from "../features/games/components/GameHighlights"
+import GameRecap from "../features/games/components/GameRecap"
 
 afterEach(() => cleanup())
 
@@ -13,7 +15,7 @@ const landing = {
   gameState:"OFF",
   awayTeam:{ abbrev:"FLA", score:3 },
   homeTeam:{ abbrev:"BUF", score:5 },
-  summary:{ scoring:[{ goals:[{ eventId:1, playerId:847, name:{ default:"J. Doan" }, teamAbbrev:{ default:"BUF" }, timeInPeriod:"05:58" }] }] }
+  summary:{ scoring:[{ goals:[{ eventId:1, playerId:847, name:{ default:"J. Doan" }, teamAbbrev:{ default:"BUF" }, timeInPeriod:"05:58", highlightClipSharingUrl:"https://www.nhl.com/video/example" }] }] }
 }
 
 describe("game detail components", () => {
@@ -71,6 +73,39 @@ describe("game detail components", () => {
   it("links scoring players by player id", () => {
     render(<MemoryRouter><ScoringSummary landing={landing} /></MemoryRouter>)
     expect(screen.getByRole("link", { name:"J. Doan" })).toHaveAttribute("href", "/players/847")
+  })
+
+  it("shows one goal highlight at a time and only available navigation", () => {
+    render(<GameHighlights landing={{ ...landing, summary:{ scoring:[{ goals:[
+      { eventId:1, name:{ default:"First goal" }, teamAbbrev:{ default:"BUF" }, highlightClipSharingUrl:"https://www.nhl.com/video/first" },
+      { eventId:2, name:{ default:"Second goal" }, teamAbbrev:{ default:"FLA" }, highlightClipSharingUrl:"https://www.nhl.com/video/second" }
+    ] }] } }} />)
+
+    expect(screen.getByText("First goal")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name:"Next highlight" })).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name:"Previous highlight" })).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole("button", { name:"Next highlight" }))
+
+    expect(screen.getByText("Second goal")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name:"Previous highlight" })).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name:"Next highlight" })).not.toBeInTheDocument()
+  })
+
+  it("does not render media sections for scheduled or scoreless games", () => {
+    const scheduled = { ...landing, gameState:"FUT" }
+    const scoreless = { ...landing, summary:{ scoring:[] } }
+
+    render(<><GameHighlights landing={scheduled} /><ScoringSummary landing={scoreless} /></>)
+
+    expect(screen.queryByRole("heading", { name:"Highlights" })).not.toBeInTheDocument()
+    expect(screen.queryByRole("heading", { name:"Scoring summary" })).not.toBeInTheDocument()
+  })
+
+  it("links final games to an official recap search", () => {
+    render(<GameRecap landing={{ ...landing, gameDate:"2026-10-21", awayTeam:{ name:{ default:"Boston Bruins" } }, homeTeam:{ name:{ default:"New York Rangers" } } }} />)
+    expect(screen.getByRole("heading", { name:"Game recap" })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name:"Find recap" })).toHaveAttribute("href", expect.stringContaining("youtube.com/@NHL/search"))
   })
 
   it("maps penalties and safely labels unknown play types", () => {
