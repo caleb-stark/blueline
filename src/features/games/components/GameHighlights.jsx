@@ -1,6 +1,6 @@
 import { useState } from "react"
 import useGameRecap from "../hooks/useGameRecap"
-import { canShowGameMedia, getGoalHighlights, getRecapSearchUrl } from "../utils/gameMedia"
+import { canShowGameMedia, getGoalHighlights } from "../utils/gameMedia"
 
 function goalLabel(goal){
   return goal?.playerName?.default || goal?.name?.default || "Scoring highlight"
@@ -79,7 +79,6 @@ function GameHighlights({ landing }){
       </div>
       {recapLoading && <p className="muted-text game-media-status">Looking for the official full-game recap…</p>}
       {recapError && <p className="muted-text game-media-status">Full-game recap unavailable. Goal highlights are still available.</p>}
-      {!recap && <a className="game-media-fallback-link" href={getRecapSearchUrl(landing)} target="_blank" rel="noreferrer">Search the official NHL channel for the full recap</a>}
     </section>
   )
 }
