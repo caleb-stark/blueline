@@ -26,7 +26,7 @@ function GameDetailsPage() {
     <div className="game-details-page">
       <GameHeader landing={landing} />
       <GameScoreboard landing={landing} />
-      {showGameMedia && <GameHighlights landing={landing} />}
+      {showGameMedia && <GameHighlights landing={landing} boxScore={boxScore} />}
       {errors.boxScore ? <ErrorMessage message={errors.boxScore} /> : <BoxScore boxScore={boxScore} />}
       {showGameMedia && <ScoringSummary landing={landing} />}
       {errors.playByPlay ? <ErrorMessage message={errors.playByPlay} /> : <><PenaltySummary playByPlay={playByPlay} /><PlayByPlay playByPlay={playByPlay} /></>}

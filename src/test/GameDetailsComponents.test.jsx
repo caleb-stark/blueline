@@ -106,6 +106,17 @@ describe("game detail components", () => {
     expect(screen.getByRole("presentation")).toHaveAttribute("src", "goal.jpg")
   })
 
+  it("uses the scorer headshot when a highlight has no thumbnail", () => {
+    render(<GameHighlights
+      landing={{ ...landing, awayTeam:{ ...landing.awayTeam, logo:"buf.svg" }, summary:{ scoring:[{ goals:[
+        { eventId:1, playerId:847, name:{ default:"Goal" }, teamAbbrev:{ default:"BUF" }, highlightClipSharingUrl:"https://www.nhl.com/video/goal" }
+      ] }] } }}
+      boxScore={{ playerByGameStats:{ awayTeam:{ forwards:[{ playerId:847, headshot:"player.jpg" }] }, homeTeam:{} } }}
+    />)
+
+    expect(screen.getByRole("presentation")).toHaveAttribute("src", "player.jpg")
+  })
+
   it("does not render media sections for scheduled or scoreless games", () => {
     const scheduled = { ...landing, gameState:"FUT" }
     const scoreless = { ...landing, summary:{ scoring:[] } }

@@ -11,11 +11,21 @@ function periodLabel(goal){
   return `P${goal?.period || "—"}`
 }
 
-function goalThumbnail(goal, landing){
+function goalThumbnail(goal, landing, boxScore){
   const directThumbnail = goal?.highlightClip?.thumbnailUrl || goal?.highlightClip?.thumbnail || goal?.thumbnailUrl
 
   if(typeof directThumbnail === "string" && directThumbnail){
     return directThumbnail
+  }
+
+  const players = ["awayTeam", "homeTeam"].flatMap(teamKey => {
+    const team = boxScore?.playerByGameStats?.[teamKey]
+    return [...(team?.forwards || []), ...(team?.defense || []), ...(team?.goalies || [])]
+  })
+  const player = players.find(candidate => candidate?.playerId === goal?.playerId)
+
+  if(typeof player?.headshot === "string" && player.headshot){
+    return player.headshot
   }
 
   const teamAbbrev = goal?.teamAbbrev?.default
@@ -24,14 +34,14 @@ function goalThumbnail(goal, landing){
   return getTeamLogo(team)
 }
 
-function getPlaylistItems(landing, recap){
+function getPlaylistItems(landing, boxScore, recap){
   const highlights = getGoalHighlights(landing).map((goal, index) => ({
     id:`nhl-${goal?.eventId || index}`,
     kind:"nhl",
     title:goalLabel(goal),
     subtitle:`${goal?.teamAbbrev?.default || "Goal"} · ${periodLabel(goal)} · ${goal?.timeInPeriod || "Time unavailable"}`,
     url:goal.highlightClipSharingUrl,
-    thumbnailUrl:goalThumbnail(goal, landing)
+    thumbnailUrl:goalThumbnail(goal, landing, boxScore)
   }))
 
   return recap ? [{ id:recap.id, kind:"youtube", title:"Full Game Recap", subtitle:recap.title, ...recap }, ...highlights] : highlights
@@ -53,11 +63,11 @@ function VideoPlayer({ item }){
   )
 }
 
-function GameHighlights({ landing }){
+function GameHighlights({ landing, boxScore }){
   const { recap } = useGameRecap(landing)
   const [selectedId, setSelectedId] = useState(null)
   const playlistRef = useRef(null)
-  const items = getPlaylistItems(landing, recap)
+  const items = getPlaylistItems(landing, boxScore, recap)
 
   if(!canShowGameMedia(landing) || items.length === 0){
     return null
