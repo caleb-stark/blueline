@@ -44,4 +44,29 @@ describe("YouTube recap API", () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
+
+  it("does not cache an aborted in-flight request", async () => {
+    let calls = 0
+    const fetchMock = vi.fn().mockImplementation((url, options) => {
+      calls += 1
+
+      if(calls === 1){
+        return new Promise((resolve, reject) => {
+          options.signal.addEventListener("abort", () => reject(new DOMException("Aborted", "AbortError")))
+        })
+      }
+
+      return Promise.resolve({ ok:true, json:async () => ({ items:[] }) })
+    })
+    vi.stubGlobal("fetch", fetchMock)
+
+    const controller = new AbortController()
+    const firstRequest = getGameRecap(landing, { signal:controller.signal })
+    controller.abort()
+
+    await expect(firstRequest).rejects.toMatchObject({ name:"AbortError" })
+    await getGameRecap(landing)
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+  })
 })

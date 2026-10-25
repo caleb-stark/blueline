@@ -42,10 +42,8 @@ function matchesGame(item, landing){
 
 export async function getGameRecap(landing, options = {}){
   const query = getRecapQuery(landing)
-  const cached = recapCache.get(query)
-
-  if(cached){
-    return cached
+  if(recapCache.has(query)){
+    return Promise.resolve(recapCache.get(query))
   }
 
   const request = fetch(`/youtube-api/youtube/v3/search?part=snippet&type=video&channelId=${NHL_YOUTUBE_CHANNEL_ID}&maxResults=10&order=date&q=${encodeURIComponent(query)}`, options)
@@ -68,14 +66,9 @@ export async function getGameRecap(landing, options = {}){
       throw new Error(message(error), { cause:error })
     })
 
-  recapCache.set(query, request)
-
-  try{
-    return await request
-  }catch(error){
-    recapCache.delete(query)
-    throw error
-  }
+  const recap = await request
+  recapCache.set(query, recap)
+  return recap
 }
 
 export function clearRecapCache(){
