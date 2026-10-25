@@ -60,7 +60,6 @@ function GameHighlights({ landing }){
       <div className="game-video-layout">
         <div className="game-video-stage">
           <VideoPlayer item={activeItem} />
-          {activeItem.kind === "nhl" && <p className="muted-text game-video-note">This highlight opens on NHL.com because embedding is not available for this video.</p>}
         </div>
         <div className="game-video-playlist" aria-label="Game video playlist">
           {items.map((item, index) => (
