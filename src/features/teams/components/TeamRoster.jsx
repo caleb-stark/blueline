@@ -12,6 +12,16 @@ function playerName(player){
   return `${first} ${last}`.trim() || "Unnamed player"
 }
 
+function playerPosition(player, groupKey){
+  if(typeof player?.positionCode === "string" && player.positionCode){
+    if(groupKey === "forwards" && player.positionCode === "L") return "LW"
+    if(groupKey === "forwards" && player.positionCode === "R") return "RW"
+    return player.positionCode
+  }
+
+  return groupKey === "defensemen" ? "D" : groupKey === "goalies" ? "G" : "F"
+}
+
 function TeamRoster({ roster }){
   const availableGroups = groups.map(([key, label]) => ({ key, label, players:Array.isArray(roster?.[key]) ? roster[key] : [] }))
 
@@ -20,21 +30,28 @@ function TeamRoster({ roster }){
   }
 
   return(
-    <section className="team-roster" aria-labelledby="roster-heading">
+    <section className="team-roster panel-card" aria-labelledby="roster-heading">
       <div className="section-heading">
         <h2 id="roster-heading">Roster</h2>
         <span>Current roster</span>
       </div>
       {availableGroups.map((group) => (
-        <section className="panel-card roster-group" key={group.key} aria-labelledby={`${group.key}-heading`}>
+        <section className="roster-group" key={group.key} aria-labelledby={`${group.key}-heading`}>
           <div className="section-heading compact-heading"><h3 id={`${group.key}-heading`}>{group.label}</h3><span>{group.players.length}</span></div>
           {group.players.length === 0 ? <p className="muted-text">No players listed.</p> : (
             <ul className="roster-list">
               {group.players.map((player, index) => {
                 const playerId = player?.id
                 const key = playerId ?? `${group.key}-${index}`
-                const content = playerId ? <Link to={`/players/${playerId}`}>{playerName(player)}</Link> : <span>{playerName(player)}</span>
-                return <li key={key}>{content}</li>
+                const content = (
+                  <>
+                    {player?.headshot && <img src={player.headshot} alt="" width="64" height="64" loading="lazy" decoding="async" />}
+                    <span><strong>{playerName(player)}</strong><small>{playerPosition(player, group.key)}</small></span>
+                  </>
+                )
+                return playerId
+                  ? <li key={key}><Link className="roster-player-card" to={`/players/${playerId}`}>{content}</Link></li>
+                  : <li key={key}><span className="roster-player-card">{content}</span></li>
               })}
             </ul>
           )}

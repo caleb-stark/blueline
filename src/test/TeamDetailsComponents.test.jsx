@@ -18,7 +18,7 @@ describe("team detail components", () => {
     expect(screen.getByAltText("")).toHaveAttribute("src", "logo.png")
   })
 
-  it("renders only verified club-stat collections and handles missing fields", () => {
+  it("renders current team stats and handles missing fields", () => {
     const { rerender } = renderWithRouter(<TeamStats stats={{ skaters:[{}], goalies:[{},{}] }} />)
 
     expect(screen.getByText("Skaters listed")).toBeInTheDocument()
@@ -28,11 +28,20 @@ describe("team detail components", () => {
 
     rerender(<MemoryRouter><TeamStats stats={{}} /></MemoryRouter>)
     expect(screen.getByText("No club stats available")).toBeInTheDocument()
+
+    rerender(<MemoryRouter><TeamStats team={{ gamesPlayed:10, wins:7, losses:2, otLosses:1, points:15, goalFor:34, goalAgainst:25 }} /></MemoryRouter>)
+    expect(screen.getByText("Games played")).toBeInTheDocument()
+    expect(screen.getByText("34")).toBeInTheDocument()
+    expect(screen.queryByText("Skaters listed")).not.toBeInTheDocument()
   })
 
   it("groups roster players and links only players with NHL ids", () => {
     renderWithRouter(<TeamRoster roster={{
-      forwards:[{ id:8471, firstName:{ default:"First" }, lastName:{ default:"Forward" } }],
+      forwards:[
+        { id:8471, firstName:{ default:"First" }, lastName:{ default:"Forward" }, positionCode:"L" },
+        { id:8473, firstName:{ default:"Right" }, lastName:{ default:"Forward" }, positionCode:"R" },
+        { id:8474, firstName:{ default:"Unknown" }, lastName:{ default:"Forward" } }
+      ],
       defensemen:[{ id:8472, firstName:{ default:"First" }, lastName:{ default:"Defense" } }],
       goalies:[{ firstName:{ default:"No" }, lastName:{ default:"Id" } }]
     }} />)
@@ -40,9 +49,12 @@ describe("team detail components", () => {
     expect(screen.getByRole("heading", { name:"Forwards" })).toBeInTheDocument()
     expect(screen.getByRole("heading", { name:"Defensemen" })).toBeInTheDocument()
     expect(screen.getByRole("heading", { name:"Goalies" })).toBeInTheDocument()
-    expect(screen.getByRole("link", { name:"First Forward" })).toHaveAttribute("href", "/players/8471")
-    expect(screen.getByRole("link", { name:"First Defense" })).toHaveAttribute("href", "/players/8472")
+    expect(screen.getByRole("link", { name:/First Forward/ })).toHaveAttribute("href", "/players/8471")
+    expect(screen.getByRole("link", { name:/First Defense/ })).toHaveAttribute("href", "/players/8472")
+    expect(screen.getByText("LW")).toBeInTheDocument()
+    expect(screen.getByText("RW")).toBeInTheDocument()
     expect(screen.getByText("No Id")).toBeInTheDocument()
+    expect(screen.getAllByText("F")).toHaveLength(1)
     expect(screen.queryByRole("link", { name:"No Id" })).not.toBeInTheDocument()
   })
 })

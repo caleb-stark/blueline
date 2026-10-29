@@ -2,11 +2,27 @@ function collectionCount(value){
   return Array.isArray(value) ? value.length : null
 }
 
-function TeamStats({ stats }){
-  const skaters = collectionCount(stats?.skaters)
-  const goalies = collectionCount(stats?.goalies)
+function formatStat(value){
+  return typeof value === "number" && Number.isFinite(value) ? value : "—"
+}
 
-  if(skaters === null && goalies === null){
+function TeamStats({ team, stats }){
+  const teamStats = [
+    ["Games played", team?.gamesPlayed],
+    ["Wins", team?.wins],
+    ["Losses", team?.losses],
+    ["OT losses", team?.otLosses],
+    ["Points", team?.points],
+    ["Goals for", team?.goalFor],
+    ["Goals against", team?.goalAgainst]
+  ].filter(([, value]) => typeof value === "number" && Number.isFinite(value))
+  const collectionStats = [
+    ["Skaters listed", collectionCount(stats?.skaters)],
+    ["Goalies listed", collectionCount(stats?.goalies)]
+  ].filter(([, value]) => value !== null)
+  const cards = teamStats.length > 0 ? teamStats : collectionStats
+
+  if(cards.length === 0){
     return <div className="empty-card"><div><strong>No club stats available</strong><p>The NHL did not return club-stat collections for this team.</p></div></div>
   }
 
@@ -17,8 +33,7 @@ function TeamStats({ stats }){
         <span>Current season</span>
       </div>
       <div className="team-stat-grid">
-        {skaters !== null && <div className="snapshot-card"><span>Skaters listed</span><strong>{skaters}</strong></div>}
-        {goalies !== null && <div className="snapshot-card"><span>Goalies listed</span><strong>{goalies}</strong></div>}
+        {cards.map(([label, value]) => <div className="snapshot-card team-stat-card" key={label}><span>{label}</span><strong>{formatStat(value)}</strong></div>)}
       </div>
     </section>
   )

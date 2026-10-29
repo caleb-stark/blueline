@@ -7,8 +7,8 @@ describe("team mapping", () => {
     const teams = getTeamsFromStandings(standingsFixture)
 
     expect(teams).toHaveLength(32)
-    expect(teams[0]).toMatchObject({ abbrev:"CAR", name:"Carolina Hurricanes" })
-    expect(teams[31].abbrev).toBe("CGY")
+    expect(teams[0]).toMatchObject({ abbrev:"ANA", name:"Anaheim Ducks" })
+    expect(teams[31]).toMatchObject({ abbrev:"WPG", name:"Winnipeg Jets" })
   })
 
   it("uses the nested abbreviation for links and does not substitute the numeric id", () => {
@@ -20,5 +20,14 @@ describe("team mapping", () => {
 
     expect(teams[0].abbrev).toBe("MTL")
     expect(teams[0].abbrev).not.toBe("8")
+  })
+
+  it("sorts teams alphabetically by display name", () => {
+    const teams = getTeamsFromStandings({ standings:[
+      { teamAbbrev:{ default:"TOR" }, teamName:{ default:"Toronto Maple Leafs" } },
+      { teamAbbrev:{ default:"ANA" }, teamName:{ default:"Anaheim Ducks" } }
+    ] })
+
+    expect(teams.map(team => team.name)).toEqual(["Anaheim Ducks", "Toronto Maple Leafs"])
   })
 })
