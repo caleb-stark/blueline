@@ -879,7 +879,7 @@ a{
   margin-bottom:var(--space-5);
 }
 
-.standings-view-button{
+.schedule-controls .standings-view-button{
   min-width:0;
   color:var(--muted-strong);
   border:1px solid var(--border);
@@ -892,7 +892,7 @@ a{
   cursor:pointer;
 }
 
-.standings-view-button.is-selected{
+.schedule-controls .standings-view-button.is-selected{
   color:var(--text-strong);
   border-color:var(--purple-bright);
   background:var(--surface);
