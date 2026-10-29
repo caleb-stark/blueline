@@ -15,9 +15,9 @@ describe("TeamGrid", () => {
       </MemoryRouter>
     )
 
-    expect(screen.getByText("Carolina Hurricanes")).toBeInTheDocument()
-    expect(screen.getByRole("link", { name:"Carolina Hurricanes" })).toHaveAttribute("href", "/teams/CAR")
-    expect(screen.getByRole("link", { name:"New York Rangers" })).toHaveAttribute("href", "/teams/NYR")
+    expect(screen.getByText("Anaheim Ducks")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name:"Anaheim Ducks" })).toHaveAttribute("href", "/teams/ANA")
+    expect(screen.getByRole("link", { name:"Boston Bruins" })).toHaveAttribute("href", "/teams/BOS")
     expect(screen.getAllByAltText("")[0]).toHaveAttribute("loading", "lazy")
     expect(screen.getAllByAltText("")[0]).toHaveAttribute("width", "48")
   })

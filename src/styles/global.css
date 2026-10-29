@@ -1462,8 +1462,12 @@ a{
 
 .team-stat-grid{
   display:grid;
-  grid-template-columns:repeat(2, 1fr);
+  grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
   gap:var(--space-4);
+}
+
+.team-stat-card span{
+  color:var(--purple-bright);
 }
 
 .team-details-page > section,
@@ -1473,6 +1477,10 @@ a{
 
 .roster-group{
   margin-bottom:var(--space-4);
+}
+
+.roster-group:last-child{
+  margin-bottom:0;
 }
 
 .roster-list{
@@ -1485,14 +1493,49 @@ a{
 }
 
 .roster-list li{
-  color:var(--muted-strong);
-  border-bottom:1px solid var(--border-soft);
-  padding:0.55rem 0;
+  min-width:0;
 }
 
-.roster-list a{
+.roster-player-card{
+  display:flex;
+  min-height:5rem;
+  align-items:center;
+  gap:var(--space-3);
   color:var(--text);
+  border:1px solid var(--border-soft);
+  border-radius:var(--radius-md);
+  background:var(--surface);
+  padding:var(--space-2) var(--space-3);
   text-decoration:none;
+}
+
+.roster-player-card img{
+  width:4rem;
+  height:4rem;
+  flex:0 0 4rem;
+  object-fit:contain;
+}
+
+.roster-player-card > span{
+  display:grid;
+  min-width:0;
+  gap:0.2rem;
+}
+
+.roster-player-card strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.roster-player-card small{
+  color:var(--muted-strong);
+  font-size:0.8rem;
+  font-weight:800;
+}
+
+.roster-player-card:not(a){
+  color:var(--text);
 }
 
 .muted-text{

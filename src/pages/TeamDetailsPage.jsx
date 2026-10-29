@@ -28,7 +28,7 @@ function TeamDetailsPage() {
       <TeamHeader team={team} />
       {errors.roster && <ErrorMessage message={errors.roster} />}
       {errors.stats && <ErrorMessage message={errors.stats} />}
-      {!errors.stats && <TeamStats stats={stats} />}
+      {!errors.stats && <TeamStats team={team} stats={stats} />}
       {!errors.roster && <TeamRoster roster={roster} />}
     </div>
   )
