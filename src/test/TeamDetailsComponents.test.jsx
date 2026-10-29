@@ -37,7 +37,11 @@ describe("team detail components", () => {
 
   it("groups roster players and links only players with NHL ids", () => {
     renderWithRouter(<TeamRoster roster={{
-      forwards:[{ id:8471, firstName:{ default:"First" }, lastName:{ default:"Forward" } }],
+      forwards:[
+        { id:8471, firstName:{ default:"First" }, lastName:{ default:"Forward" }, positionCode:"L" },
+        { id:8473, firstName:{ default:"Right" }, lastName:{ default:"Forward" }, positionCode:"R" },
+        { id:8474, firstName:{ default:"Unknown" }, lastName:{ default:"Forward" } }
+      ],
       defensemen:[{ id:8472, firstName:{ default:"First" }, lastName:{ default:"Defense" } }],
       goalies:[{ firstName:{ default:"No" }, lastName:{ default:"Id" } }]
     }} />)
@@ -47,6 +51,8 @@ describe("team detail components", () => {
     expect(screen.getByRole("heading", { name:"Goalies" })).toBeInTheDocument()
     expect(screen.getByRole("link", { name:/First Forward/ })).toHaveAttribute("href", "/players/8471")
     expect(screen.getByRole("link", { name:/First Defense/ })).toHaveAttribute("href", "/players/8472")
+    expect(screen.getByText("LW")).toBeInTheDocument()
+    expect(screen.getByText("RW")).toBeInTheDocument()
     expect(screen.getByText("No Id")).toBeInTheDocument()
     expect(screen.getAllByText("F")).toHaveLength(1)
     expect(screen.queryByRole("link", { name:"No Id" })).not.toBeInTheDocument()

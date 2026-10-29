@@ -14,6 +14,8 @@ function playerName(player){
 
 function playerPosition(player, groupKey){
   if(typeof player?.positionCode === "string" && player.positionCode){
+    if(groupKey === "forwards" && player.positionCode === "L") return "LW"
+    if(groupKey === "forwards" && player.positionCode === "R") return "RW"
     return player.positionCode
   }
 
