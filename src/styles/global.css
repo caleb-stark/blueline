@@ -893,7 +893,7 @@ a{
 }
 
 .schedule-controls .standings-view-button.is-selected{
-  color:var(--text-strong);
+  color:var(--muted-strong);
   border-color:var(--purple-bright);
   background:var(--surface);
 }
