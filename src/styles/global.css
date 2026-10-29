@@ -880,12 +880,12 @@ a{
 }
 
 .standings-view-button{
-  min-width:11rem;
+  min-width:0;
   color:var(--muted-strong);
   border:1px solid var(--border);
   border-radius:var(--radius-pill);
   background:transparent;
-  padding:0.7rem 1.5rem;
+  padding:0.7rem 1.25rem;
   font:inherit;
   font-weight:800;
   text-align:center;
@@ -895,7 +895,7 @@ a{
 .standings-view-button.is-selected{
   color:var(--text-strong);
   border-color:var(--purple-bright);
-  background:var(--tint);
+  background:rgba(192, 132, 252, 0.06);
 }
 
 .standings-sections{
