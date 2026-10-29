@@ -1475,6 +1475,10 @@ a{
   margin-top:var(--space-5);
 }
 
+.team-details-page > .team-detail-header{
+  margin-bottom:0;
+}
+
 .roster-group{
   margin-bottom:var(--space-4);
 }
