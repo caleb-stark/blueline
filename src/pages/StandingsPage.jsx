@@ -33,7 +33,6 @@ function StandingsPage(){
           <option value="conference">Conference</option>
         </select>
       </div>
-      {!loading && !error && standings.length > 0 && <div className="section-heading standings-content-heading"><h2>{view === "division" ? "Division" : "Conference"}</h2></div>}
       {content}
     </div>
   )
