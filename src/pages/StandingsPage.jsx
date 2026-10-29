@@ -9,6 +9,11 @@ import { formatDate } from "../utils/dates"
 function StandingsPage(){
   const { standings, loading, error } = useStandings(formatDate())
   const [view, setView] = useState("division")
+  const viewOptions = [
+    { value:"division", label:"Division" },
+    { value:"conference", label:"Conference" },
+    { value:"wildcard", label:"Wild Card" }
+  ]
   let content = <StandingsSections standings={standings} view={view} />
 
   if(loading){
@@ -26,12 +31,18 @@ function StandingsPage(){
   return (
     <div>
       <h1 className="page-title">Standings</h1>
-      <div className="schedule-controls standings-view-controls">
-        <label htmlFor="standings-view">View</label>
-        <select id="standings-view" value={view} onChange={event => setView(event.target.value)}>
-          <option value="division">Division</option>
-          <option value="conference">Conference</option>
-        </select>
+      <div className="schedule-controls standings-view-controls" role="group" aria-label="Standings view">
+        {viewOptions.map(option => (
+          <button
+            className={`standings-view-button${view === option.value ? " is-selected" : ""}`}
+            type="button"
+            key={option.value}
+            aria-pressed={view === option.value}
+            onClick={() => setView(option.value)}
+          >
+            {option.label}
+          </button>
+        ))}
       </div>
       {content}
     </div>

@@ -59,4 +59,18 @@ describe("standings components", () => {
     expect(screen.getAllByRole("heading", { level:3 }).map(heading => heading.textContent)).toEqual(["Eastern", "Western"])
   })
 
+  it("shows the top two wildcard teams in each conference", () => {
+    render(<MemoryRouter><StandingsSections standings={[
+      { teamAbbrev:{ default:"FLA" }, teamName:{ default:"Florida Panthers" }, conferenceName:"Eastern", wildcardSequence:1 },
+      { teamAbbrev:{ default:"TOR" }, teamName:{ default:"Toronto Maple Leafs" }, conferenceName:"Eastern", wildcardSequence:2 },
+      { teamAbbrev:{ default:"COL" }, teamName:{ default:"Colorado Avalanche" }, conferenceName:"Western", wildcardSequence:1 },
+      { teamAbbrev:{ default:"NSH" }, teamName:{ default:"Nashville Predators" }, conferenceName:"Western", wildcardSequence:2 },
+      { teamAbbrev:{ default:"TBL" }, teamName:{ default:"Tampa Bay Lightning" }, conferenceName:"Eastern", wildcardSequence:3 }
+    ]} view="wildcard" /></MemoryRouter>)
+
+    expect(screen.getAllByRole("heading", { level:3 }).map(heading => heading.textContent)).toEqual(["Eastern Wild Card", "Western Wild Card"])
+    expect(screen.getByText("Florida Panthers")).toBeInTheDocument()
+    expect(screen.queryByText("Tampa Bay Lightning")).not.toBeInTheDocument()
+  })
+
 })
